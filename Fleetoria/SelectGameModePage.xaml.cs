@@ -24,5 +24,23 @@ namespace Fleetoria
         {
             InitializeComponent();
         }
+
+        private void PvAIButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new PvAIPage());
+        }
+
+        private void LocalPVPButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (NavigationService.CanGoBack)
+            {
+                NavigationService.GoBack();
+            }
+        }
     }
 }

@@ -9,24 +9,28 @@
       Title="MainMenuPage">
 
     <Page.Background>
-        <ImageBrush ImageSource="C:\C# Projects\Fleetoria\Fleetoria\Resources\Back_Ground_Main.png" Stretch="Fill" />
+        <ImageBrush ImageSource="/Back_Ground_Main.png" Stretch="Fill" />
     </Page.Background>
     <Page.Resources>
         <Style x:Key="FlatButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="LightGray"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="Padding" Value="5,2"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontFamily" Value="Exo 2"/>
+            <Setter Property="FontSize" Value="40"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontStyle" Value="Italic"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="40,50,40,50"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}">
+                        <Border Background="{TemplateBinding Background}" 
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
                             <ContentPresenter HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
+                              VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -55,7 +59,7 @@
        Grid.RowSpan="4"
        Visibility="Collapsed"/>
 
-        <Image Source="C:\C# Projects\Fleetoria\Fleetoria\Resources\Logo_Fleetoria_2.png"
+        <Image Source="/Logo_Fleetoria_2.png"
            Stretch="Uniform"
            Panel.ZIndex="0" 
            Grid.Column="0"
@@ -66,20 +70,10 @@
 
         <Button x:Name="PlayButton"
                 Content="Play"
-                FontSize="40"
-                FontFamily="Exo 2" 
-                FontWeight="Medium"
-                FontStyle="Italic"
                 Grid.Column="1"
                 Grid.Row="1"
-                BorderBrush="Black"
-                BorderThickness="2"
-                Background="White"
-                ClipToBounds="False"
-                Margin="40, 50, 40, 50" 
                 Click="PlayButton_Click" 
-                Style="{StaticResource FlatButtonStyle}"
-                Cursor="Hand">
+                Style="{StaticResource FlatButtonStyle}">
             <Button.RenderTransform>
                 <TranslateTransform x:Name="BtnPlay"/>
             </Button.RenderTransform>
@@ -87,20 +81,10 @@
 
         <Button x:Name="SettingsButton"
                 Content="Settings"
-                FontSize="40"
-                FontFamily="Exo 2" 
-                FontWeight="Medium"
-                FontStyle="Italic"
                 Grid.Column="1"
                 Grid.Row="2"
-                BorderBrush="Black"
-                BorderThickness="2"
-                Background="White"
-                ClipToBounds="False"
-                Margin="40, 50, 40, 50" 
                 Click="SettingsButton_Click"
-                Style="{StaticResource FlatButtonStyle}"
-                Cursor="Hand">
+                Style="{StaticResource FlatButtonStyle}">
             <Button.RenderTransform>
                 <TranslateTransform x:Name="BtnSettings"/>
             </Button.RenderTransform>
@@ -108,20 +92,10 @@
 
         <Button x:Name="ExitButton"
                 Content="Exit"
-                FontSize="40"
-                FontFamily="Exo 2" 
-                FontWeight="Medium"
-                FontStyle="Italic"
                 Grid.Column="1"
                 Grid.Row="3"
-                BorderBrush="Black"
-                BorderThickness="2"
-                Background="White"
-                ClipToBounds="False"
-                Margin="40, 50, 40, 50" 
                 Click="ExitButton_Click"
-                Style="{StaticResource FlatButtonStyle}"
-                Cursor="Hand">
+                Style="{StaticResource FlatButtonStyle}">
             <Button.RenderTransform>
                 <TranslateTransform x:Name="BtnExit"/>
             </Button.RenderTransform>

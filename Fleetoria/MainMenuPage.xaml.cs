@@ -38,6 +38,7 @@ namespace Fleetoria
 
         private void AnimateAllButtons(object sender, RoutedEventArgs e)
         {
+            Loaded -= AnimateAllButtons;
             AnimateElement(Logo, delaySeconds: 0.5);
             AnimateElement(PlayButton, delaySeconds: 1);
             AnimateElement(SettingsButton, delaySeconds: 1.5);

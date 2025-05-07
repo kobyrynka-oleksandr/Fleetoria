@@ -5,10 +5,92 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Fleetoria"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="800" d:DesignWidth="1280"
       Title="SelectGameModePage">
 
+    <Page.Background>
+        <ImageBrush ImageSource="/Back_Ground_Main.png" Stretch="Fill" />
+    </Page.Background>
+    <Page.Resources>
+        <Style x:Key="FlatButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontFamily" Value="Exo 2"/>
+            <Setter Property="FontSize" Value="40"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="40,50,40,50"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Image Source="/Logo_Fleetoria_2.png"
+               Stretch="Uniform"
+               Panel.ZIndex="0" 
+               Grid.Column="0"
+               Grid.ColumnSpan="3"
+               HorizontalAlignment="Center"
+               Margin="10,0,10,10"
+               x:Name="Logo"/>
+
+        <Button x:Name="PvAIButton"
+            Content="Player vs AI"
+            Grid.Column="1"
+            Grid.Row="1"
+            Click="PvAIButton_Click"
+            Style="{StaticResource FlatButtonStyle}">
+            <Button.RenderTransform>
+                <TranslateTransform x:Name="BtnPvAITransform"/>
+            </Button.RenderTransform>
+        </Button>
+
+        <Button x:Name="LocalPVPButton"
+                Content="Local PvP"
+                Grid.Column="1"
+                Grid.Row="2"
+                Click="LocalPVPButton_Click"
+                Style="{StaticResource FlatButtonStyle}">
+            <Button.RenderTransform>
+                <TranslateTransform x:Name="BtnLocalPvPTransform"/>
+            </Button.RenderTransform>
+        </Button>
+
+        <Button x:Name="BackButton"
+            Content="Back"
+            Grid.Column="1"
+            Grid.Row="3"
+            Click="BackButton_Click"
+            Style="{StaticResource FlatButtonStyle}">
+            <Button.RenderTransform>
+                <TranslateTransform x:Name="BtnBackTransform"/>
+            </Button.RenderTransform>
+        </Button>
     </Grid>
 </Page>

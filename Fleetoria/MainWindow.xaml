@@ -12,7 +12,7 @@
         WindowStyle="None"
         ResizeMode="NoResize">
     <Window.Background>
-        <ImageBrush ImageSource="C:\C# Projects\Fleetoria\Fleetoria\Resources\Back_Ground_Main.png" Stretch="Fill" />
+        <ImageBrush ImageSource="/Back_Ground_Main.png" Stretch="Fill" />
     </Window.Background>
 
     <Frame x:Name="MainFrame"
