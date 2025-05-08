@@ -58,6 +58,7 @@
     <Compile Include="MainMenuPage.xaml.cs">
       <DependentUpon>MainMenuPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PageWithScaling.cs" />
     <Compile Include="PvAIPage.xaml.cs">
       <DependentUpon>PvAIPage.xaml</DependentUpon>
     </Compile>
@@ -115,14 +116,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Resource Include="Resources\Back_Ground_Main.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Logo_Fleetoria_2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Back_Ground_Main.png" />
+    <Resource Include="Resources\Logo_Fleetoria_2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

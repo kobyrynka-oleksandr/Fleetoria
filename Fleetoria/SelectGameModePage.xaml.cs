@@ -18,7 +18,7 @@ namespace Fleetoria
     /// <summary>
     /// Interaction logic for SelectGameModePage.xaml
     /// </summary>
-    public partial class SelectGameModePage : Page
+    public partial class SelectGameModePage : PageWithScaling
     {
         public SelectGameModePage()
         {

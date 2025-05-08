@@ -12,7 +12,7 @@
         WindowStyle="None"
         ResizeMode="NoResize">
     <Window.Background>
-        <ImageBrush ImageSource="/Back_Ground_Main.png" Stretch="Fill" />
+        <ImageBrush ImageSource="/Resources/Back_Ground_Main.png" Stretch="Fill" />
     </Window.Background>
 
     <Frame x:Name="MainFrame"

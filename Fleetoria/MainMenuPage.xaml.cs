@@ -19,7 +19,7 @@ namespace Fleetoria
     /// <summary>
     /// Interaction logic for MainMenuPage.xaml
     /// </summary>
-    public partial class MainMenuPage : Page
+    public partial class MainMenuPage : PageWithScaling
     {
         public MainMenuPage()
         {

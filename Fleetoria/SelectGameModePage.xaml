@@ -1,4 +1,4 @@
-﻿<Page x:Class="Fleetoria.SelectGameModePage"
+﻿<local:PageWithScaling x:Class="Fleetoria.SelectGameModePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,10 +8,10 @@
       d:DesignHeight="800" d:DesignWidth="1280"
       Title="SelectGameModePage">
 
-    <Page.Background>
-        <ImageBrush ImageSource="/Back_Ground_Main.png" Stretch="Fill" />
-    </Page.Background>
-    <Page.Resources>
+    <local:PageWithScaling.Background>
+        <ImageBrush ImageSource="/Resources/Back_Ground_Main.png" Stretch="Fill" />
+    </local:PageWithScaling.Background>
+    <local:PageWithScaling.Resources>
         <Style x:Key="FlatButtonStyle" TargetType="Button">
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="Background" Value="White"/>
@@ -36,7 +36,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </Page.Resources>
+    </local:PageWithScaling.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -51,7 +51,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Image Source="/Logo_Fleetoria_2.png"
+        <Image Source="/Resources/Logo_Fleetoria_2.png"
                Stretch="Uniform"
                Panel.ZIndex="0" 
                Grid.Column="0"
@@ -93,4 +93,4 @@
             </Button.RenderTransform>
         </Button>
     </Grid>
-</Page>
+</local:PageWithScaling>
