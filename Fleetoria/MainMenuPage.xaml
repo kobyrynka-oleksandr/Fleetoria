@@ -11,33 +11,7 @@
     <local:PageWithScaling.Background>
         <ImageBrush ImageSource="/Resources/Back_Ground_Main.png" Stretch="Fill" />
     </local:PageWithScaling.Background>
-    <local:PageWithScaling.Resources>
-        <Style x:Key="FlatButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="Black"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="FontFamily" Value="Exo 2"/>
-            <Setter Property="FontSize" Value="40"/>
-            <Setter Property="FontWeight" Value="Medium"/>
-            <Setter Property="FontStyle" Value="Italic"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Margin" Value="40,50,40,50"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </local:PageWithScaling.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

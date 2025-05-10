@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -59,12 +60,18 @@
       <DependentUpon>MainMenuPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PageWithScaling.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="PvAIPage.xaml.cs">
       <DependentUpon>PvAIPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SelectGameModePage.xaml.cs">
       <DependentUpon>SelectGameModePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ship.cs" />
+    <Page Include="Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainMenuPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -116,8 +123,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Resource Include="Resources\1Deck_Ship.png" />
+    <Resource Include="Resources\2Deck_ship.png" />
+    <Resource Include="Resources\3Deck_ship.png" />
+    <Resource Include="Resources\4Deck_ship.png" />
     <Resource Include="Resources\Back_Ground_Main.png" />
   </ItemGroup>
   <ItemGroup>

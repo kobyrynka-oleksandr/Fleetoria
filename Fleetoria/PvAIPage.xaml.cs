@@ -1,27 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Fleetoria
 {
-    /// <summary>
-    /// Interaction logic for PvAIPage.xaml
-    /// </summary>
     public partial class PvAIPage : PageWithScaling
     {
         private readonly char[] Letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
         private readonly int[] Numbers = Enumerable.Range(1, 10).ToArray();
+
+        Player human = new Player();
 
         public PvAIPage()
         {
@@ -30,13 +22,14 @@ namespace Fleetoria
             DataContext = this;
 
             CreateBattlefield();
+
+            AddShipsToPanel();
         }
+
         private void CreateBattlefield()
         {
             int gridSize = 10;
 
-
-            // Створюємо структуру: 11 рядків і 11 колонок (1 заголовкова + 10 ігрових)
             for (int i = 0; i <= gridSize; i++)
             {
                 LabeledBattleGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
@@ -54,7 +47,6 @@ namespace Fleetoria
             Grid.SetColumn(topLeftCell, 0);
             LabeledBattleGrid.Children.Add(topLeftCell);
 
-            // Додаємо заголовки колонок (A–J)
             for (int col = 1; col <= gridSize; col++)
             {
                 var headerCell = new Border
@@ -75,7 +67,6 @@ namespace Fleetoria
                 LabeledBattleGrid.Children.Add(headerCell);
             }
 
-            // Додаємо заголовки рядків (1–10)
             for (int row = 1; row <= gridSize; row++)
             {
                 var headerCell = new Border
@@ -96,7 +87,6 @@ namespace Fleetoria
                 LabeledBattleGrid.Children.Add(headerCell);
             }
 
-            // Додаємо самі клітинки поля бою
             for (int row = 1; row <= gridSize; row++)
             {
                 for (int col = 1; col <= gridSize; col++)
@@ -113,6 +103,90 @@ namespace Fleetoria
                     Grid.SetColumn(cell, col);
                     LabeledBattleGrid.Children.Add(cell);
                 }
+            }
+        }
+
+        private void AddShipsToPanel()
+        {
+            var deckCounts = new List<int>
+            {
+                4,
+                3, 3,
+                2, 2, 2,
+                1, 1, 1, 1
+            };
+
+            foreach (var count in deckCounts)
+            {
+                var ship = new Ship(count);
+
+                ship.MouseLeftButtonDown += (s, e) =>
+                {
+                    if (ship.isPlaced)
+                    {
+                        int oldRow = Grid.GetRow(ship);
+                        int oldCol = Grid.GetColumn(ship);
+                        human.ClearMatrixWhenShipMovedOnGrid(oldRow - 1, oldCol - 1, ship.DeckCount, ship.isRotated);
+                        ship.isPlaced = false;
+                    }
+                };
+
+                ShipPanel.Children.Add(ship);
+            }
+        }
+
+        private void Ship_Drop(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(typeof(Ship)))
+                return;
+
+            var ship = e.Data.GetData(typeof(Ship)) as Ship;
+            if (ship == null)
+                return;
+
+            Point dropPosition = e.GetPosition(LabeledBattleGrid);
+
+            int totalRows = 10;
+            int totalColumns = 10;
+
+            double cellHeight = LabeledBattleGrid.ActualHeight / (totalRows + 1);
+            double cellWidth = LabeledBattleGrid.ActualWidth / (totalColumns + 1);
+
+            int row = (int)(dropPosition.Y / cellHeight);
+            int col = (int)(dropPosition.X / cellWidth);
+
+            if (row == 0 || col == 0)
+                return;
+
+            if (row + ship.DeckCount - 1 > totalRows)
+            {
+                if (!ShipPanel.Children.Contains(ship))
+                {
+                    ShipPanel.Children.Add(ship);
+                }
+                return;
+            }
+
+            if (human.isCanBeAdded(row - 1, col - 1, ship.DeckCount, ship.isRotated))
+            {
+                if (ship.Parent is Panel panel)
+                {
+                    panel.Children.Remove(ship);
+                }
+
+                Grid.SetColumn(ship, col);
+                Grid.SetRow(ship, row);
+                Grid.SetRowSpan(ship, ship.DeckCount);
+
+                if (!LabeledBattleGrid.Children.Contains(ship))
+                {
+                    LabeledBattleGrid.Children.Add(ship);
+                }
+
+                human.AddShipToMatrix(row - 1, col - 1, ship.DeckCount, ship.isRotated);
+                ship.isPlaced = true;
+
+                MessageBox.Show(human.MBMatrix());
             }
         }
     }
