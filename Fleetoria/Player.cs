@@ -24,6 +24,7 @@ namespace Fleetoria
             int rows = matrixOfBattle.GetLength(0);
             int cols = matrixOfBattle.GetLength(1);
 
+            // Спочатку ставимо корабель
             for (int i = 0; i < deckCount; i++)
             {
                 int r = row + (isRotated ? 0 : i);
@@ -35,13 +36,15 @@ namespace Fleetoria
                 }
             }
 
-            for (int i = -1; i <= (isRotated ? 1 : deckCount); i++)
-            {
-                for (int j = -1; j <= (isRotated ? deckCount : 1); j++)
-                {
-                    int r = row + (isRotated ? j : i);
-                    int c = col + (isRotated ? i : j);
+            int startRow = row - 1;
+            int endRow = isRotated ? row + 1 : row + deckCount;
+            int startCol = col - 1;
+            int endCol = isRotated ? col + deckCount : col + 1;
 
+            for (int r = startRow; r <= endRow; r++)
+            {
+                for (int c = startCol; c <= endCol; c++)
+                {
                     if (r >= 0 && r < rows && c >= 0 && c < cols)
                     {
                         if (matrixOfBattle[r, c] == 0)
@@ -57,6 +60,7 @@ namespace Fleetoria
             int rows = matrixOfBattle.GetLength(0);
             int cols = matrixOfBattle.GetLength(1);
 
+            // 1. Очистити сам корабель
             for (int i = 0; i < deckCount; i++)
             {
                 int r = row + (isRotated ? 0 : i);
@@ -68,13 +72,15 @@ namespace Fleetoria
                 }
             }
 
-            for (int i = -1; i <= (isRotated ? 1 : deckCount); i++)
-            {
-                for (int j = -1; j <= (isRotated ? deckCount : 1); j++)
-                {
-                    int r = row + (isRotated ? j : i);
-                    int c = col + (isRotated ? i : j);
+            int startRow = row - 1;
+            int endRow = isRotated ? row + 1 : row + deckCount;
+            int startCol = col - 1;
+            int endCol = isRotated ? col + deckCount : col + 1;
 
+            for (int r = startRow; r <= endRow; r++)
+            {
+                for (int c = startCol; c <= endCol; c++)
+                {
                     if (r >= 0 && r < rows && c >= 0 && c < cols)
                     {
                         if (matrixOfBattle[r, c] == 2 && !HasAdjacentShip(r, c))

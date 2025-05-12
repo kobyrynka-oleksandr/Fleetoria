@@ -27,7 +27,7 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Width="400" Height="400">
-                <Grid x:Name="LabeledBattleGrid" AllowDrop="True" Drop="Ship_Drop"/>
+                <Grid x:Name="LabeledBattleGrid" AllowDrop="True" DragOver="Ship_DragOver" />
             </Border>
 
             <Border Grid.Row="1" 
@@ -36,10 +36,24 @@
                 Background="White" 
                 CornerRadius="10"
                 Margin="90,0">
-                <StackPanel x:Name="ShipPanel" 
+                <WrapPanel x:Name="ShipPanel" 
                     Orientation="Horizontal" 
-                    HorizontalAlignment="Center" />
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
             </Border>
+
+            <Button Content="⟳"
+                    FontStyle="Normal"
+                    Grid.Row="0"
+                    Click="PlayButton_Click" 
+                    Style="{StaticResource FlatButtonStyle}"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    BorderThickness="1"
+                    FontSize="35"
+                    Margin="15,15"
+                    Width="45"
+                    Height="45"/>
         </Grid>
     </Grid>
 </local:PageWithScaling>
