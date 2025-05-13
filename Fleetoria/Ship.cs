@@ -18,8 +18,6 @@ namespace Fleetoria
         public bool isRotated { get; private set; }
         public bool isPlaced { get; set; }
 
-        //public event Action<Ship> OnDragStart;
-
         private string baseImageName;
         public bool IsRotatedDuringDrag { get; set; } = false;
 
@@ -65,15 +63,6 @@ namespace Fleetoria
             Content = ShipImage;
         }
 
-        //private void Ship_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    if (e.LeftButton == MouseButtonState.Pressed)
-        //    {
-        //        OnDragStart?.Invoke(this);
-        //        DragDrop.DoDragDrop(this, this, DragDropEffects.Move);
-        //    }
-        //}
-
         public void Rotate()
         {
             if (!isRotated)
@@ -86,6 +75,22 @@ namespace Fleetoria
         {
             Grid.SetRowSpan(this, 1);
             Grid.SetColumnSpan(this, 1);
+        }
+        public void SetRotation(bool isRotated)
+        {
+            this.isRotated = isRotated;
+
+            // Очищуємо можливий попередній трансформ
+            this.LayoutTransform = Transform.Identity;
+
+            if (isRotated)
+            {
+                this.LayoutTransform = new RotateTransform(0);
+            }
+            else
+            {
+                this.LayoutTransform = new RotateTransform(90); // або використовуйте вертикальне розміщення у стилях
+            }
         }
     }
 

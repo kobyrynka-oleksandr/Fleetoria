@@ -42,18 +42,33 @@
                     VerticalAlignment="Center"/>
             </Border>
 
-            <Button Content="⟳"
+            <Button Content="🔁"
                     FontStyle="Normal"
                     Grid.Row="0"
-                    Click="PlayButton_Click" 
+                    Click="ResetButton_Click" 
                     Style="{StaticResource FlatButtonStyle}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
-                    BorderThickness="1"
+                    BorderThickness="0"
+                    Background="Transparent"
                     FontSize="35"
                     Margin="15,15"
-                    Width="45"
-                    Height="45"/>
+                    Width="50"
+                    Height="50"/>
+
+            <Button Content="🔀"
+                FontStyle="Normal"
+                Grid.Row="1"
+                Click="ShuffleButton_Click" 
+                Style="{StaticResource FlatButtonStyle}"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
+                BorderThickness="0"
+                Background="Transparent"
+                FontSize="35"
+                Margin="15,15"
+                Width="50"
+                Height="50"/>
         </Grid>
     </Grid>
 </local:PageWithScaling>

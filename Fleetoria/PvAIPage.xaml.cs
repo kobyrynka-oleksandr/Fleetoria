@@ -19,7 +19,6 @@ namespace Fleetoria
         {
             InitializeComponent();
 
-
             this.Focusable = true;
             this.Focus(); 
             Keyboard.Focus(this);
@@ -133,7 +132,6 @@ namespace Fleetoria
                         int oldRow = Grid.GetRow(ship);
                         int oldCol = Grid.GetColumn(ship);
                         human.ClearMatrixWhenShipMovedOnGrid(oldRow - 1, oldCol - 1, ship.DeckCount, ship.isRotated);
-                        ship.ResetSpan();
                         ship.isPlaced = false;
                     }
 
@@ -250,9 +248,72 @@ namespace Fleetoria
             AddShipsToPanel();
         }
 
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             ResetBattleGrid();
+        }
+
+        private void ShuffleButton_Click(object sender, RoutedEventArgs e)
+        {
+            ResetBattleGrid();
+
+            var random = new Random();
+
+            foreach (Ship ship in ShipPanel.Children.OfType<Ship>().ToList())
+            {
+                bool placed = false;
+                int attempts = 0;
+
+                ship.ResetSpan();
+
+                while (!placed && attempts < 1000)
+                {
+                    bool isRotated = random.Next(2) == 0;
+
+                    ship.SetRotation(isRotated);
+
+                    int maxRow = isRotated ? 9 : 10 - ship.DeckCount;
+                    int maxCol = isRotated ? 10 - ship.DeckCount : 9;
+
+                    int row = random.Next(0, maxRow + 1);
+                    int col = random.Next(0, maxCol + 1);
+
+                    if (human.isCanBeAdded(row, col, ship.DeckCount, isRotated))
+                    {
+                        if (ship.Parent is Panel panel)
+                            panel.Children.Remove(ship);
+
+                        LabeledBattleGrid.Children.Add(ship);
+
+                        Grid.SetRow(ship, row + 1);
+                        Grid.SetColumn(ship, col + 1);
+
+                        if (isRotated)
+                        {
+                            Grid.SetRowSpan(ship, 1);
+                            Grid.SetColumnSpan(ship, ship.DeckCount);
+                        }
+                        else
+                        {
+                            Grid.SetRowSpan(ship, ship.DeckCount);
+                            Grid.SetColumnSpan(ship, 1);
+                        }
+
+                        human.AddShipToMatrix(row, col, ship.DeckCount, isRotated);
+                        ship.isPlaced = true;
+
+                        placed = true;
+                    }
+
+                    attempts++;
+                }
+
+                if (!placed)
+                {
+                    MessageBox.Show("Не вдалося розмістити всі кораблі. Спробуйте ще раз.");
+                    return;
+                }
+            }
         }
     }
 }
