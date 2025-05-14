@@ -24,7 +24,6 @@ namespace Fleetoria
             int rows = matrixOfBattle.GetLength(0);
             int cols = matrixOfBattle.GetLength(1);
 
-            // Спочатку ставимо корабель
             for (int i = 0; i < deckCount; i++)
             {
                 int r = row + (isRotated ? 0 : i);
@@ -60,7 +59,6 @@ namespace Fleetoria
             int rows = matrixOfBattle.GetLength(0);
             int cols = matrixOfBattle.GetLength(1);
 
-            // 1. Очистити сам корабель
             for (int i = 0; i < deckCount; i++)
             {
                 int r = row + (isRotated ? 0 : i);
@@ -135,6 +133,11 @@ namespace Fleetoria
             }
 
             return true;
+        }
+        public void ClearData()
+        {
+            matrixOfBattle = new int[10, 10];
+            health = 20;
         }
         public string MBMatrix()
         {

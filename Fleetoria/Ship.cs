@@ -41,7 +41,6 @@ namespace Fleetoria
             };
 
             LoadShipImage();
-            //MouseMove += Ship_MouseMove;
         }
 
         private void LoadShipImage()
@@ -80,7 +79,6 @@ namespace Fleetoria
         {
             this.isRotated = isRotated;
 
-            // Очищуємо можливий попередній трансформ
             this.LayoutTransform = Transform.Identity;
 
             if (isRotated)
@@ -89,7 +87,7 @@ namespace Fleetoria
             }
             else
             {
-                this.LayoutTransform = new RotateTransform(90); // або використовуйте вертикальне розміщення у стилях
+                this.LayoutTransform = new RotateTransform(90);
             }
         }
     }

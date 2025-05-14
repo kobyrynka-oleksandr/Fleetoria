@@ -25,19 +25,19 @@ namespace Fleetoria
             
             DataContext = this;
 
-            CreateBattlefield();
+            CreateBattlefield(LabeledBattleGridHuman);
 
-            AddShipsToPanel();
+            AddShipsToPanel(ShipPanel, human, LabeledBattleGridHuman);
         }
 
-        private void CreateBattlefield()
+        private void CreateBattlefield(Grid grid)
         {
             int gridSize = 10;
 
             for (int i = 0; i <= gridSize; i++)
             {
-                LabeledBattleGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                LabeledBattleGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             }
 
             var topLeftCell = new Border
@@ -46,49 +46,24 @@ namespace Fleetoria
                 BorderThickness = new Thickness(1),
                 BorderBrush = Brushes.Black
             };
-
             Grid.SetRow(topLeftCell, 0);
             Grid.SetColumn(topLeftCell, 0);
-            LabeledBattleGrid.Children.Add(topLeftCell);
+            grid.Children.Add(topLeftCell);
 
             for (int col = 1; col <= gridSize; col++)
             {
-                var headerCell = new Border
-                {
-                    Background = Brushes.White,
-                    BorderThickness = new Thickness(1),
-                    BorderBrush = Brushes.Black,
-                    Child = new TextBlock
-                    {
-                        Text = Letters[col - 1].ToString(),
-                        FontWeight = FontWeights.Bold,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center
-                    }
-                };
+                var headerCell = CreateHeaderCell(Letters[col - 1].ToString());
                 Grid.SetRow(headerCell, 0);
                 Grid.SetColumn(headerCell, col);
-                LabeledBattleGrid.Children.Add(headerCell);
+                grid.Children.Add(headerCell);
             }
 
             for (int row = 1; row <= gridSize; row++)
             {
-                var headerCell = new Border
-                {
-                    Background = Brushes.White,
-                    BorderThickness = new Thickness(1),
-                    BorderBrush = Brushes.Black,
-                    Child = new TextBlock
-                    {
-                        Text = Numbers[row - 1].ToString(),
-                        FontWeight = FontWeights.Bold,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center
-                    }
-                };
+                var headerCell = CreateHeaderCell(Numbers[row - 1].ToString());
                 Grid.SetRow(headerCell, row);
                 Grid.SetColumn(headerCell, 0);
-                LabeledBattleGrid.Children.Add(headerCell);
+                grid.Children.Add(headerCell);
             }
 
             for (int row = 1; row <= gridSize; row++)
@@ -102,24 +77,31 @@ namespace Fleetoria
                         Background = Brushes.White,
                         Tag = $"{Letters[col - 1]}{Numbers[row - 1]}"
                     };
-
                     Grid.SetRow(cell, row);
                     Grid.SetColumn(cell, col);
-                    LabeledBattleGrid.Children.Add(cell);
+                    grid.Children.Add(cell);
                 }
             }
         }
 
-        private void AddShipsToPanel()
+        private Border CreateHeaderCell(string text) => new Border
         {
-            ShipPanel.Children.Clear();
-            var deckCounts = new List<int>
+            Background = Brushes.White,
+            BorderThickness = new Thickness(1),
+            BorderBrush = Brushes.Black,
+            Child = new TextBlock
             {
-                4,
-                3, 3,
-                2, 2, 2,
-                1, 1, 1, 1
-            };
+                Text = text,
+                FontWeight = FontWeights.Bold,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            }
+        };
+
+        private void AddShipsToPanel(Panel panel, Player player, Grid grid)
+        {
+            panel.Children.Clear();
+            var deckCounts = new List<int> { 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
 
             foreach (var count in deckCounts)
             {
@@ -131,41 +113,48 @@ namespace Fleetoria
                     {
                         int oldRow = Grid.GetRow(ship);
                         int oldCol = Grid.GetColumn(ship);
-                        human.ClearMatrixWhenShipMovedOnGrid(oldRow - 1, oldCol - 1, ship.DeckCount, ship.isRotated);
+                        player.ClearMatrixWhenShipMovedOnGrid(oldRow - 1, oldCol - 1, ship.DeckCount, ship.isRotated);
                         ship.isPlaced = false;
                     }
 
                     DragDrop.DoDragDrop(ship, ship, DragDropEffects.Move);
 
-                    if (!ship.isPlaced && LabeledBattleGrid.Children.Contains(ship))
+                    if (!ship.isPlaced && grid.Children.Contains(ship))
                     {
                         int newRow = Grid.GetRow(ship) - 1;
                         int newCol = Grid.GetColumn(ship) - 1;
 
-                        human.AddShipToMatrix(newRow, newCol, ship.DeckCount, ship.isRotated);
+                        player.AddShipToMatrix(newRow, newCol, ship.DeckCount, ship.isRotated);
                         ship.isPlaced = true;
 
-                        MessageBox.Show(human.MBMatrix());
+                        MessageBox.Show(player.MBMatrix());
                     }
                 };
 
-                ShipPanel.Children.Add(ship);
+                panel.Children.Add(ship);
+            }
+        }
+        private void Ship_DragOver_Wrapper(object sender, DragEventArgs e)
+        {
+            if (sender is Grid grid)
+            {
+                Ship_DragOver(sender, e, grid, human);
             }
         }
 
-        private void Ship_DragOver(object sender, DragEventArgs e)
+        private void Ship_DragOver(object sender, DragEventArgs e, Grid grid, Player player)
         {
             if (!e.Data.GetDataPresent(typeof(Ship))) return;
 
             var ship = e.Data.GetData(typeof(Ship)) as Ship;
             if (ship == null) return;
 
-            Point dropPosition = e.GetPosition(LabeledBattleGrid);
+            Point dropPosition = e.GetPosition(grid);
             int totalRows = 10;
             int totalColumns = 10;
 
-            double cellHeight = LabeledBattleGrid.ActualHeight / (totalRows + 1);
-            double cellWidth = LabeledBattleGrid.ActualWidth / (totalColumns + 1);
+            double cellHeight = grid.ActualHeight / (totalRows + 1);
+            double cellWidth = grid.ActualWidth / (totalColumns + 1);
 
             int row = (int)(dropPosition.Y / cellHeight);
             int col = (int)(dropPosition.X / cellWidth);
@@ -175,24 +164,24 @@ namespace Fleetoria
             int matrixRow = row - 1;
             int matrixCol = col - 1;
 
-            HandleRotationDuringDrag(ship, e);
+            HandleRotationDuringDrag(ship, e, matrixRow, matrixCol, totalRows, totalColumns, player);
 
-            if (!CanPlaceShipAt(matrixRow, matrixCol, ship, totalRows, totalColumns))
+            if (!CanPlaceShipAt(matrixRow, matrixCol, ship, totalRows, totalColumns, player))
                 return;
 
-            PlaceShipOnGrid(ship, row, col);
+            PlaceShipOnGrid(ship, row, col, grid);
         }
 
-        private bool CanPlaceShipAt(int matrixRow, int matrixCol, Ship ship, int totalRows, int totalColumns)
+        private bool CanPlaceShipAt(int row, int col, Ship ship, int totalRows, int totalColumns, Player player)
         {
-            if ((!ship.isRotated && matrixRow + ship.DeckCount > totalRows) ||
-                (ship.isRotated && matrixCol + ship.DeckCount > totalColumns))
+            if ((!ship.isRotated && row + ship.DeckCount > totalRows) ||
+                (ship.isRotated && col + ship.DeckCount > totalColumns))
                 return false;
 
-            return human.isCanBeAdded(matrixRow, matrixCol, ship.DeckCount, ship.isRotated);
+            return player.isCanBeAdded(row, col, ship.DeckCount, ship.isRotated);
         }
 
-        private void HandleRotationDuringDrag(Ship ship, DragEventArgs e)
+        private void HandleRotationDuringDrag(Ship ship, DragEventArgs e, int row, int col, int totalRows, int totalColumns, Player player)
         {
             bool isAltPressed = e.KeyStates.HasFlag(DragDropKeyStates.AltKey);
 
@@ -202,7 +191,7 @@ namespace Fleetoria
                 ship.ResetSpan();
                 ship.IsRotatedDuringDrag = true;
 
-                if (!CanPlaceShipAt(Grid.GetRow(ship) - 1, Grid.GetColumn(ship) - 1, ship, 10, 10))
+                if (!CanPlaceShipAt(row, col, ship, totalRows, totalColumns, player))
                 {
                     ship.Rotate();
                     ship.ResetSpan();
@@ -215,7 +204,7 @@ namespace Fleetoria
             }
         }
 
-        private void PlaceShipOnGrid(Ship ship, int row, int col)
+        private void PlaceShipOnGrid(Ship ship, int row, int col, Grid grid)
         {
             if (ship.Parent is Panel panel)
                 panel.Children.Remove(ship);
@@ -228,92 +217,86 @@ namespace Fleetoria
             else
                 Grid.SetColumnSpan(ship, ship.DeckCount);
 
-            if (!LabeledBattleGrid.Children.Contains(ship))
-                LabeledBattleGrid.Children.Add(ship);
+            if (!grid.Children.Contains(ship))
+                grid.Children.Add(ship);
         }
 
-        private void ResetBattleGrid()
+        private void ResetBattleGrid(Grid grid, Player player, Panel panel)
         {
-            var shipsToRemove = LabeledBattleGrid.Children
-                .OfType<UIElement>()
-                .Where(el => el is Ship)
-                .ToList();
-
-            human = new Player();
+            var shipsToRemove = grid.Children.OfType<UIElement>().Where(el => el is Ship).ToList();
+            player.ClearData();
 
             foreach (var ship in shipsToRemove)
-            {
-                LabeledBattleGrid.Children.Remove(ship);
-            }
-            AddShipsToPanel();
+                grid.Children.Remove(ship);
+
+            AddShipsToPanel(panel, player, grid);
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-            ResetBattleGrid();
+            ResetBattleGrid(LabeledBattleGridHuman, human, ShipPanel);
         }
 
         private void ShuffleButton_Click(object sender, RoutedEventArgs e)
         {
-            ResetBattleGrid();
-
+            ResetBattleGrid(LabeledBattleGridHuman, human, ShipPanel);
             var random = new Random();
 
             foreach (Ship ship in ShipPanel.Children.OfType<Ship>().ToList())
             {
-                bool placed = false;
-                int attempts = 0;
-
-                ship.ResetSpan();
-
-                while (!placed && attempts < 1000)
-                {
-                    bool isRotated = random.Next(2) == 0;
-
-                    ship.SetRotation(isRotated);
-
-                    int maxRow = isRotated ? 9 : 10 - ship.DeckCount;
-                    int maxCol = isRotated ? 10 - ship.DeckCount : 9;
-
-                    int row = random.Next(0, maxRow + 1);
-                    int col = random.Next(0, maxCol + 1);
-
-                    if (human.isCanBeAdded(row, col, ship.DeckCount, isRotated))
-                    {
-                        if (ship.Parent is Panel panel)
-                            panel.Children.Remove(ship);
-
-                        LabeledBattleGrid.Children.Add(ship);
-
-                        Grid.SetRow(ship, row + 1);
-                        Grid.SetColumn(ship, col + 1);
-
-                        if (isRotated)
-                        {
-                            Grid.SetRowSpan(ship, 1);
-                            Grid.SetColumnSpan(ship, ship.DeckCount);
-                        }
-                        else
-                        {
-                            Grid.SetRowSpan(ship, ship.DeckCount);
-                            Grid.SetColumnSpan(ship, 1);
-                        }
-
-                        human.AddShipToMatrix(row, col, ship.DeckCount, isRotated);
-                        ship.isPlaced = true;
-
-                        placed = true;
-                    }
-
-                    attempts++;
-                }
-
-                if (!placed)
+                if (!TryPlaceShipRandomly(LabeledBattleGridHuman, ShipPanel, human, ship, random))
                 {
                     MessageBox.Show("Не вдалося розмістити всі кораблі. Спробуйте ще раз.");
                     return;
                 }
             }
+        }
+        private bool TryPlaceShipRandomly(Grid grid, Panel panel, Player player, Ship ship, Random random)
+        {
+            int attempts = 0;
+            ship.ResetSpan();
+
+            while (attempts < 1000)
+            {
+                bool isRotated = random.Next(2) == 0;
+                ship.SetRotation(isRotated);
+
+                int maxRow = isRotated ? 9 : 10 - ship.DeckCount;
+                int maxCol = isRotated ? 10 - ship.DeckCount : 9;
+
+                int row = random.Next(0, maxRow + 1);
+                int col = random.Next(0, maxCol + 1);
+
+                if (player.isCanBeAdded(row, col, ship.DeckCount, isRotated))
+                {
+                    if (ship.Parent is Panel parentPanel)
+                        parentPanel.Children.Remove(ship);
+
+                    grid.Children.Add(ship);
+                    Grid.SetRow(ship, row + 1);
+                    Grid.SetColumn(ship, col + 1);
+
+                    if (isRotated)
+                    {
+                        Grid.SetRowSpan(ship, 1);
+                        Grid.SetColumnSpan(ship, ship.DeckCount);
+                    }
+                    else
+                    {
+                        Grid.SetRowSpan(ship, ship.DeckCount);
+                        Grid.SetColumnSpan(ship, 1);
+                    }
+
+                    player.AddShipToMatrix(row, col, ship.DeckCount, isRotated);
+                    ship.isPlaced = true;
+
+                    return true;
+                }
+
+                attempts++;
+            }
+
+            return false;
         }
     }
 }
