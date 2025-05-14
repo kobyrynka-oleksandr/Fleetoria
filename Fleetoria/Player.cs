@@ -16,7 +16,7 @@ namespace Fleetoria
         public Player()
         {
             matrixOfBattle = new int[10, 10];
-            health = 20;
+            health = 0;
         }
 
         public void AddShipToMatrix(int row, int col, int deckCount, bool isRotated)
@@ -53,6 +53,7 @@ namespace Fleetoria
                     }
                 }
             }
+            health += deckCount;
         }
         public void ClearMatrixWhenShipMovedOnGrid(int row, int col, int deckCount, bool isRotated)
         {
@@ -88,6 +89,7 @@ namespace Fleetoria
                     }
                 }
             }
+            health -= deckCount;
         }
         private bool HasAdjacentShip(int r, int c)
         {
@@ -115,7 +117,7 @@ namespace Fleetoria
 
             return false;
         }
-        public bool isCanBeAdded(int row, int col, int deckCount, bool isRotated)
+        public bool IsCanBeAdded(int row, int col, int deckCount, bool isRotated)
         {
             int rows = matrixOfBattle.GetLength(0);
             int cols = matrixOfBattle.GetLength(1);
@@ -137,22 +139,141 @@ namespace Fleetoria
         public void ClearData()
         {
             matrixOfBattle = new int[10, 10];
-            health = 20;
+            health = 0;
         }
-        public string MBMatrix()
+        public bool IsShipPresent(int row, int col)
         {
-            string mString = "";
-            
-            for (int i = 0; i < matrixOfBattle.GetLength(0); i++)
+            return matrixOfBattle[row - 1, col - 1] == 1;
+        }
+        public void DestroyDeck(int row, int col)
+        {
+            matrixOfBattle[row - 1, col - 1] = -1;
+            health -= 1;
+        }
+        public bool IsShipDestroyed(int row, int col)
+        {
+            int r = row - 1;
+            int c = col - 1;
+
+            if (r < 0 || r >= 10 || c < 0 || c >= 10)
+                return false;
+
+            if (matrixOfBattle[r, c] != -1 && matrixOfBattle[r, c] != 1)
+                return false;
+
+            int left = c;
+            while (left > 0 && (matrixOfBattle[r, left - 1] == 1 || matrixOfBattle[r, left - 1] == -1))
+                left--;
+
+            int right = c;
+            while (right < 9 && (matrixOfBattle[r, right + 1] == 1 || matrixOfBattle[r, right + 1] == -1))
+                right++;
+
+            bool horizontalDestroyed = true;
+            for (int i = left; i <= right; i++)
             {
-                for (int j = 0; j < matrixOfBattle.GetLength(1); j++)
+                if (matrixOfBattle[r, i] != -1)
                 {
-                    mString += matrixOfBattle[i, j] + " ";
+                    horizontalDestroyed = false;
+                    break;
                 }
-                mString += "\n";
             }
 
-            return mString;
+            if (horizontalDestroyed && right > left)
+                return true;
+
+            int up = r;
+            while (up > 0 && (matrixOfBattle[up - 1, c] == 1 || matrixOfBattle[up - 1, c] == -1))
+                up--;
+
+            int down = r;
+            while (down < 9 && (matrixOfBattle[down + 1, c] == 1 || matrixOfBattle[down + 1, c] == -1))
+                down++;
+
+            bool verticalDestroyed = true;
+            for (int i = up; i <= down; i++)
+            {
+                if (matrixOfBattle[i, c] != -1)
+                {
+                    verticalDestroyed = false;
+                    break;
+                }
+            }
+
+            if (verticalDestroyed && down > up)
+                return true;
+
+            return matrixOfBattle[r, c] == -1 && left == right && up == down;
+        }
+        public List<(int row, int col)> GetDestroyedShipCells(int row, int col)
+        {
+            int r = row - 1;
+            int c = col - 1;
+            var result = new List<(int, int)>();
+
+            if (r < 0 || r >= 10 || c < 0 || c >= 10)
+                return result;
+
+            if (matrixOfBattle[r, c] != -1 && matrixOfBattle[r, c] != 1)
+                return result;
+
+            int left = c;
+            while (left > 0 && (matrixOfBattle[r, left - 1] == 1 || matrixOfBattle[r, left - 1] == -1))
+                left--;
+
+            int right = c;
+            while (right < 9 && (matrixOfBattle[r, right + 1] == 1 || matrixOfBattle[r, right + 1] == -1))
+                right++;
+
+            bool horizontalDestroyed = true;
+            for (int i = left; i <= right; i++)
+            {
+                if (matrixOfBattle[r, i] != -1)
+                {
+                    horizontalDestroyed = false;
+                    break;
+                }
+            }
+
+            if (horizontalDestroyed && right > left)
+            {
+                for (int i = left; i <= right; i++)
+                    result.Add((r + 1, i + 1));
+                return result;
+            }
+
+            int up = r;
+            while (up > 0 && (matrixOfBattle[up - 1, c] == 1 || matrixOfBattle[up - 1, c] == -1))
+                up--;
+
+            int down = r;
+            while (down < 9 && (matrixOfBattle[down + 1, c] == 1 || matrixOfBattle[down + 1, c] == -1))
+                down++;
+
+            bool verticalDestroyed = true;
+            for (int i = up; i <= down; i++)
+            {
+                if (matrixOfBattle[i, c] != -1)
+                {
+                    verticalDestroyed = false;
+                    break;
+                }
+            }
+
+            if (verticalDestroyed && down > up)
+            {
+                for (int i = up; i <= down; i++)
+                    result.Add((i + 1, c + 1));
+                return result;
+            }
+
+            if (matrixOfBattle[r, c] == -1 && left == right && up == down)
+            {
+                result.Add((r + 1, c + 1));
+                return result;
+            }
+
+            return new List<(int, int)>();
         }
     }
 }

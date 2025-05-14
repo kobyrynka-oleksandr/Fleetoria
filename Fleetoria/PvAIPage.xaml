@@ -35,7 +35,7 @@
                 BorderThickness="2" 
                 Background="White" 
                 CornerRadius="10"
-                Margin="90,0">
+                Margin="90,10">
                 <WrapPanel x:Name="ShipPanel" 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Center"
@@ -69,6 +69,17 @@
                 Margin="15,15"
                 Width="50"
                 Height="50"/>
+
+            <Button Content="Back"
+        FontSize="35"
+        Grid.Row="2"
+        Click="BackButton_Click" 
+        Style="{StaticResource FlatButtonStyle}"
+        VerticalAlignment="Bottom"
+        HorizontalAlignment="Left"
+        Margin="30, 30"
+        Width="180"
+        Height="70"/>
         </Grid>
 
         <Grid x:Name="BattleGridBot" Grid.Column="1">
@@ -80,8 +91,41 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Width="400" Height="400">
-                <Grid x:Name="LabeledBattleGridBot" AllowDrop="True" DragOver="Ship_DragOver_Wrapper" />
+                <Grid x:Name="LabeledBattleGridBot"/>
             </Border>
+
+            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Width="400" Height="400">
+                <Grid x:Name="LabeledBattleGridOverlap"/>
+            </Border>
+
+            <Border Grid.Row="1" BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="10" Width="300" Height="120" HorizontalAlignment="Left" Margin="30,0,0,0">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+                    <TextBlock Text="Choose difficulty" 
+                   FontSize="20"
+                   FontFamily="Evo 2"
+                   FontStyle="Italic"
+                   FontWeight="Bold" 
+                   Margin="0,0,0,10"
+                   HorizontalAlignment="Center"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="40" >
+                        <Button Style="{StaticResource FlatButtonStyle}" FontSize="15" BorderThickness="1" x:Name="EasyButton" Content="Easy" Width="70" Margin="5" Click="DifficultyButton_Click"/>
+                        <Button Style="{StaticResource FlatButtonStyle}" FontSize="15" BorderThickness="1" x:Name="MediumButton" Content="Medium" Width="70" Margin="5" Click="DifficultyButton_Click"/>
+                        <Button Style="{StaticResource FlatButtonStyle}" FontSize="15" BorderThickness="1" x:Name="HardButton" Content="Hard" Width="70" Margin="5" Click="DifficultyButton_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Button Content="Start"
+                    FontSize="35"
+                    Grid.Row="1"
+                    Click="StartButton_Click" 
+                    Style="{StaticResource FlatButtonStyle}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,50,0"
+                    Width="180"
+                    Height="70"/>
         </Grid>
     </Grid>
 </local:PageWithScaling>
