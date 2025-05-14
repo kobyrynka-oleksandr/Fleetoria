@@ -124,24 +124,30 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\1Deck_Ship.png" />
-    <Resource Include="Resources\2Deck_ship.png" />
-    <Resource Include="Resources\2Deck_ship_rotated.png" />
-    <Resource Include="Resources\3Deck_ship.png" />
-    <Resource Include="Resources\4Deck_ship.png" />
     <Resource Include="Resources\Back_Ground_Main.png" />
+    <Resource Include="Resources\Ship_skins\Ship_skin_1\1Deck_ship.png" />
+    <Resource Include="Resources\Ship_skins\Ship_skin_1\1Deck_ship_rotated.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Logo_Fleetoria_2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\4Deck_ship_rotated.png" />
+    <Resource Include="Resources\Ship_skins\Ship_skin_1\2Deck_ship.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\3Deck_ship_rotated.png" />
+    <Resource Include="Resources\Ship_skins\Ship_skin_1\2Deck_ship_rotated.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\1Deck_ship_rotated.png" />
+    <Resource Include="Resources\Ship_skins\Ship_skin_1\3Deck_ship.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Ship_skins\Ship_skin_1\3Deck_ship_rotated.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Ship_skins\Ship_skin_1\4Deck_ship.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Ship_skins\Ship_skin_1\4Deck_ship_rotated.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

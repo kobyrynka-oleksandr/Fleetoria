@@ -46,7 +46,7 @@ namespace Fleetoria
         private void LoadShipImage()
         {
             string imageName = isRotated ? $"{baseImageName}_rotated.png" : $"{baseImageName}.png";
-            var bitmap = new BitmapImage(new Uri($"pack://application:,,,/Resources/{imageName}"));
+            var bitmap = new BitmapImage(new Uri($"pack://application:,,,/Resources/Ship_skins/Ship_skin_1/{imageName}"));
 
             ShipImage = new Image
             {

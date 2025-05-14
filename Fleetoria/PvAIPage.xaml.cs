@@ -28,6 +28,8 @@ namespace Fleetoria
             CreateBattlefield(LabeledBattleGridHuman);
 
             AddShipsToPanel(ShipPanel, human, LabeledBattleGridHuman);
+
+            CreateBattlefield(LabeledBattleGridBot);
         }
 
         private void CreateBattlefield(Grid grid)
