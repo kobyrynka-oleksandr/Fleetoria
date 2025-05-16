@@ -30,7 +30,8 @@
                 <Grid x:Name="LabeledBattleGridHuman" AllowDrop="True" DragOver="Ship_DragOver_Wrapper" />
             </Border>
 
-            <Border Grid.Row="1" 
+            <Border x:Name="ShipBorder"
+                Grid.Row="1" 
                 BorderBrush="Black" 
                 BorderThickness="2" 
                 Background="White" 
@@ -42,7 +43,8 @@
                     VerticalAlignment="Center"/>
             </Border>
 
-            <Button Content="🔁"
+            <Button x:Name="ResetButton"
+                    Content="🔁"
                     FontStyle="Normal"
                     Grid.Row="0"
                     Click="ResetButton_Click" 
@@ -56,7 +58,8 @@
                     Width="50"
                     Height="50"/>
 
-            <Button Content="🔀"
+            <Button x:Name="ShuffleButton"
+                Content="🔀"
                 FontStyle="Normal"
                 Grid.Row="1"
                 Click="ShuffleButton_Click" 
@@ -98,7 +101,7 @@
                 <Grid x:Name="LabeledBattleGridOverlap"/>
             </Border>
 
-            <Border Grid.Row="1" BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="10" Width="300" Height="120" HorizontalAlignment="Left" Margin="30,0,0,0">
+            <Border x:Name="DifficultyButtons" Grid.Row="1" BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="10" Width="300" Height="120" HorizontalAlignment="Left" Margin="30,0,0,0">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
                     <TextBlock Text="Choose difficulty" 
                    FontSize="20"
@@ -110,13 +113,13 @@
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="40" >
                         <Button Style="{StaticResource FlatButtonStyle}" FontSize="15" BorderThickness="1" x:Name="EasyButton" Content="Easy" Width="70" Margin="5" Click="DifficultyButton_Click"/>
-                        <Button Style="{StaticResource FlatButtonStyle}" FontSize="15" BorderThickness="1" x:Name="MediumButton" Content="Medium" Width="70" Margin="5" Click="DifficultyButton_Click"/>
                         <Button Style="{StaticResource FlatButtonStyle}" FontSize="15" BorderThickness="1" x:Name="HardButton" Content="Hard" Width="70" Margin="5" Click="DifficultyButton_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
 
-            <Button Content="Start"
+            <Button x:Name="StartButton"
+                    Content="Start"
                     FontSize="35"
                     Grid.Row="1"
                     Click="StartButton_Click" 

@@ -1,0 +1,38 @@
+﻿<Window x:Class="Fleetoria.CustomMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="White"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner"
+        AllowsTransparency="False"
+        BorderBrush="Black"
+        BorderThickness="2">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="MessageText"
+                   TextWrapping="Wrap"
+                   FontSize="20"
+                   FontWeight="Medium"
+                   FontFamily="Evo 2"
+                   FontStyle="Italic"
+                   Foreground="Black"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   TextAlignment="Center"
+                   Margin="10"/>
+        
+        <StackPanel x:Name="ButtonPanel"
+                    Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,20,0,0">
+        </StackPanel>
+    </Grid>
+</Window>

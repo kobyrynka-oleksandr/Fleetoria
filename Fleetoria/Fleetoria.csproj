@@ -57,11 +57,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BattleGridOperations.cs" />
+    <Compile Include="CustomMessageBox.xaml.cs">
+      <DependentUpon>CustomMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainMenuPage.xaml.cs">
       <DependentUpon>MainMenuPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PageWithScaling.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerBot.cs" />
+    <Compile Include="PlayerEasyBot.cs" />
+    <Compile Include="PlayerHuman.cs" />
     <Compile Include="PvAIPage.xaml.cs">
       <DependentUpon>PvAIPage.xaml</DependentUpon>
     </Compile>
@@ -69,6 +75,10 @@
       <DependentUpon>SelectGameModePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ship.cs" />
+    <Page Include="CustomMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

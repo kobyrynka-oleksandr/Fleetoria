@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,8 +18,11 @@ namespace Fleetoria
         private readonly char[] Letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
         private readonly int[] Numbers = Enumerable.Range(1, 10).ToArray();
 
-        Player Human = new Player();
-        Player Bot = new Player();
+        PlayerHuman Human = new PlayerHuman();
+        PlayerBot Bot;
+
+        private bool isBotTurn = false;
+        private enum AttackResult { Miss, Hit }
 
         BattleGridOperations bgOps = new BattleGridOperations();
 
@@ -91,7 +95,7 @@ namespace Fleetoria
             {
                 if (!bgOps.TryPlaceShipRandomly(LabeledBattleGridHuman, ShipPanel, Human, ship, random))
                 {
-                    MessageBox.Show("Не вдалося розмістити всі кораблі. Спробуйте ще раз.");
+                    CustomMessageBox.Show("Unable to place all ships. Please try again.");
                     return;
                 }
             }
@@ -117,15 +121,20 @@ namespace Fleetoria
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Human.health != 20)
+            if (Human.Health != 20)
             {
-                MessageBox.Show("Place all ships!");
+                CustomMessageBox.Show("Place all ships!", "OK");
                 return;
             }
             if (selectedDifficultyButton == null)
             {
-                MessageBox.Show("Choose difficulty!");
+                CustomMessageBox.Show("Choose difficulty!", "OK");
                 return;
+            }
+
+            if (selectedDifficultyButton == EasyButton)
+            {
+                Bot = new PlayerEasyBot();
             }
             bgOps.AddShipsToBotGrid(LabeledBattleGridBot, Bot);
 
@@ -134,6 +143,12 @@ namespace Fleetoria
             LabeledBattleGridOverlap.ColumnDefinitions.Clear();
 
             CreateOverlapGridForBot(LabeledBattleGridOverlap);
+
+            StartButton.Visibility = Visibility.Collapsed;
+            DifficultyButtons.Visibility = Visibility.Collapsed;
+            ResetButton.Visibility = Visibility.Collapsed;
+            ShuffleButton.Visibility = Visibility.Collapsed;
+            ShipBorder.Visibility = Visibility.Collapsed;
         }
 
         private void CreateOverlapGridForBot(Grid grid)
@@ -208,36 +223,156 @@ namespace Fleetoria
             };
             return mark;
         }
-        private void OverlapCell_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private async void OverlapCell_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Image mark = CreateMark();
+            if (isBotTurn) return;
+
             if (sender is Border cell)
             {
                 int row = Grid.GetRow(cell);
                 int column = Grid.GetColumn(cell);
 
-                Grid.SetRow(mark, row);
-                Grid.SetColumn(mark, column);
-
                 bool cellOccupied = LabeledBattleGridOverlap.Children
-                                    .OfType<Image>()
-                                    .Any(img => Grid.GetRow(img) == row && Grid.GetColumn(img) == column);
+                    .OfType<Image>()
+                    .Any(img => Grid.GetRow(img) == row && Grid.GetColumn(img) == column);
 
-                if (!cellOccupied)
+                if (cellOccupied) return;
+
+                AttackResult playerResult = AttackCell(Bot, cell, row, column, LabeledBattleGridOverlap);
+
+                if (Bot.Health == 0)
                 {
-                    LabeledBattleGridOverlap.Children.Add(mark);
+                    EndGame("Human win!");
+                    return;
                 }
-                if (Bot.IsShipPresent(row, column))
-                {
-                    cell.Background = new SolidColorBrush(Color.FromArgb(255, 247, 118, 106));
-                    Bot.DestroyDeck(row, column);
 
-                    if (Bot.IsShipDestroyed(row, column))
-                    {
-                        MarkDestroyedShip(Bot.GetDestroyedShipCells(row, column));
-                    }
+                if (playerResult == AttackResult.Miss)
+                {
+                    await BotTurn();
                 }
             }
+        }
+
+        private AttackResult AttackCell(Player target, Border cell, int row, int col, Grid grid)
+        {
+            Image mark = CreateMark();
+            Grid.SetRow(mark, row);
+            Grid.SetColumn(mark, col);
+            grid.Children.Add(mark);
+
+            if (target.IsShipPresent(row, col))
+            {
+                cell.Background = new SolidColorBrush(Color.FromArgb(255, 247, 118, 106));
+                target.DestroyDeck(row, col);
+
+                if (target.IsShipDestroyed(row, col))
+                {
+                    var destroyedShip = target.GetDestroyedShipCells(row, col);
+
+                    if (target == Bot)
+                    {
+                        MarkDestroyedShip(destroyedShip);
+                    }
+                    else
+                    {
+                        MarkDestroyedShip(destroyedShip, grid);
+                    }
+                }
+
+                return AttackResult.Hit;
+            }
+
+            return AttackResult.Miss;
+        }
+
+        private async Task BotTurn()
+        {
+            isBotTurn = true;
+
+            await Task.Delay(700);
+
+            AttackResult botResult;
+            do
+            {
+                var cellForAttack = Bot.GetCellForAttack();
+
+                Image mark = CreateMark();
+
+                Border markContainer = new Border
+                {
+                    Width = 40,
+                    Height = 40,
+                    Background = Brushes.Transparent,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    BorderThickness = new Thickness(0),
+                    Child = mark
+                };
+
+                int row = cellForAttack.row + 1;
+                int col = cellForAttack.col + 1;
+
+                Grid.SetRow(markContainer, row);
+                Grid.SetColumn(markContainer, col);
+                LabeledBattleGridHuman.Children.Add(markContainer);
+
+                if (Human.IsShipPresent(row, col))
+                {
+                    markContainer.Background = new SolidColorBrush(Color.FromArgb(125, 247, 118, 106));
+                    Human.DestroyDeck(row, col);
+
+                    if (Human.IsShipDestroyed(row, col))
+                    {
+                        var destroyed = Human.GetDestroyedShipCells(row, col);
+                        MarkDestroyedShip(destroyed, LabeledBattleGridHuman);
+                    }
+
+                    botResult = AttackResult.Hit;
+                }
+                else
+                {
+                    botResult = AttackResult.Miss;
+                }
+
+                await Task.Delay(500);
+
+            } while (botResult == AttackResult.Hit && Human.Health > 0);
+
+            isBotTurn = false;
+
+            if (Human.Health == 0)
+            {
+                EndGame("Bot win!");
+            }
+        }
+
+        private void EndGame(string message)
+        {
+            CustomMessageBox.Show($"{message}", "OK");
+
+            StartButton.Visibility = Visibility.Visible;
+            DifficultyButtons.Visibility = Visibility.Visible;
+            ResetButton.Visibility = Visibility.Visible;
+            ShuffleButton.Visibility = Visibility.Visible;
+            ShipBorder.Visibility = Visibility.Visible;
+
+            bgOps.ResetBattleGrid(LabeledBattleGridHuman, Human, ShipPanel);
+            bgOps.ResetBattleGrid(LabeledBattleGridBot, Bot);
+            LabeledBattleGridOverlap.Children.Clear();
+            LabeledBattleGridOverlap.RowDefinitions.Clear();
+            LabeledBattleGridOverlap.ColumnDefinitions.Clear();
+
+            isBotTurn = false;
+
+        }
+        public Border GetCellFromGrid(Grid grid, int row, int column)
+        {
+            foreach (UIElement element in grid.Children)
+            {
+                if (Grid.GetRow(element) == row && Grid.GetColumn(element) == column && element is Border)
+                    return (Border)element;
+            }
+            return null;
         }
         private void MarkDestroyedShip(List<(int row, int col)> destroyedShipCells)
         {
@@ -280,12 +415,50 @@ namespace Fleetoria
                 }
             }
         }
+        private void MarkDestroyedShip(List<(int row, int col)> destroyedShipCells, Grid grid)
+        {
+            int size = destroyedShipCells.Count - 1;
 
+            int startI = destroyedShipCells[0].row - 1 > 0 ? destroyedShipCells[0].row - 1 : destroyedShipCells[0].row;
+            int stopI = destroyedShipCells[size].row + 1 < 11 ? destroyedShipCells[size].row + 1 : destroyedShipCells[size].row;
+
+            int startJ = destroyedShipCells[0].col - 1 > 0 ? destroyedShipCells[0].col - 1 : destroyedShipCells[0].col;
+            int stopJ = destroyedShipCells[size].col + 1 < 11 ? destroyedShipCells[size].col + 1 : destroyedShipCells[size].col;
+
+            for (int i = startI; i <= stopI; i++)
+            {
+                for (int j = startJ; j <= stopJ; j++)
+                {
+                    Image mark = CreateMark();
+
+                    bool cellOccupied = grid.Children
+                                    .OfType<Image>()
+                                    .Any(img => Grid.GetRow(img) == i && Grid.GetColumn(img) == j);
+
+                    if (!cellOccupied)
+                    {
+                        Grid.SetRow(mark, i);
+                        Grid.SetColumn(mark, j);
+                        grid.Children.Add(mark);
+
+                        Bot.RemoveMarkedCell(i - 1, j - 1);
+                    }
+                }
+            }
+        }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (NavigationService.CanGoBack)
+            var result = CustomMessageBox.Show("The current state will not be saved. Are you sure?", "Yes", "No");
+            if (result == CustomMessageBox.MessageBoxResult.Yes)
             {
-                NavigationService.GoBack();
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
+            }
+            else
+            {
+                return;
             }
         }
     }

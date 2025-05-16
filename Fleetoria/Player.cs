@@ -10,19 +10,19 @@ namespace Fleetoria
 {
     public class Player
     {
-        public int[,] matrixOfBattle;
-        public int health;
+        public int[,] MatrixOfBattle;
+        public int Health { get; set; }
 
         public Player()
         {
-            matrixOfBattle = new int[10, 10];
-            health = 0;
+            MatrixOfBattle = new int[10, 10];
+            Health = 0;
         }
 
         public void AddShipToMatrix(int row, int col, int deckCount, bool isRotated)
         {
-            int rows = matrixOfBattle.GetLength(0);
-            int cols = matrixOfBattle.GetLength(1);
+            int rows = MatrixOfBattle.GetLength(0);
+            int cols = MatrixOfBattle.GetLength(1);
 
             for (int i = 0; i < deckCount; i++)
             {
@@ -31,7 +31,7 @@ namespace Fleetoria
 
                 if (r >= 0 && r < rows && c >= 0 && c < cols)
                 {
-                    matrixOfBattle[r, c] = 1;
+                    MatrixOfBattle[r, c] = 1;
                 }
             }
 
@@ -46,55 +46,19 @@ namespace Fleetoria
                 {
                     if (r >= 0 && r < rows && c >= 0 && c < cols)
                     {
-                        if (matrixOfBattle[r, c] == 0)
+                        if (MatrixOfBattle[r, c] == 0)
                         {
-                            matrixOfBattle[r, c] = 2;
+                            MatrixOfBattle[r, c] = 2;
                         }
                     }
                 }
             }
-            health += deckCount;
+            Health += deckCount;
         }
-        public void ClearMatrixWhenShipMovedOnGrid(int row, int col, int deckCount, bool isRotated)
+        protected bool HasAdjacentShip(int r, int c)
         {
-            int rows = matrixOfBattle.GetLength(0);
-            int cols = matrixOfBattle.GetLength(1);
-
-            for (int i = 0; i < deckCount; i++)
-            {
-                int r = row + (isRotated ? 0 : i);
-                int c = col + (isRotated ? i : 0);
-
-                if (r >= 0 && r < rows && c >= 0 && c < cols)
-                {
-                    matrixOfBattle[r, c] = 0;
-                }
-            }
-
-            int startRow = row - 1;
-            int endRow = isRotated ? row + 1 : row + deckCount;
-            int startCol = col - 1;
-            int endCol = isRotated ? col + deckCount : col + 1;
-
-            for (int r = startRow; r <= endRow; r++)
-            {
-                for (int c = startCol; c <= endCol; c++)
-                {
-                    if (r >= 0 && r < rows && c >= 0 && c < cols)
-                    {
-                        if (matrixOfBattle[r, c] == 2 && !HasAdjacentShip(r, c))
-                        {
-                            matrixOfBattle[r, c] = 0;
-                        }
-                    }
-                }
-            }
-            health -= deckCount;
-        }
-        private bool HasAdjacentShip(int r, int c)
-        {
-            int rows = matrixOfBattle.GetLength(0);
-            int cols = matrixOfBattle.GetLength(1);
+            int rows = MatrixOfBattle.GetLength(0);
+            int cols = MatrixOfBattle.GetLength(1);
 
             for (int dr = -1; dr <= 1; dr++)
             {
@@ -107,7 +71,7 @@ namespace Fleetoria
 
                     if (nr >= 0 && nr < rows && nc >= 0 && nc < cols)
                     {
-                        if (matrixOfBattle[nr, nc] == 1)
+                        if (MatrixOfBattle[nr, nc] == 1)
                         {
                             return true;
                         }
@@ -119,8 +83,8 @@ namespace Fleetoria
         }
         public bool IsCanBeAdded(int row, int col, int deckCount, bool isRotated)
         {
-            int rows = matrixOfBattle.GetLength(0);
-            int cols = matrixOfBattle.GetLength(1);
+            int rows = MatrixOfBattle.GetLength(0);
+            int cols = MatrixOfBattle.GetLength(1);
 
             for (int i = 0; i < deckCount; i++)
             {
@@ -130,7 +94,7 @@ namespace Fleetoria
                 if (r < 0 || r >= rows || c < 0 || c >= cols)
                     return false;
 
-                if (matrixOfBattle[r, c] == 1 || matrixOfBattle[r, c] == 2)
+                if (MatrixOfBattle[r, c] == 1 || MatrixOfBattle[r, c] == 2)
                     return false;
             }
 
@@ -138,17 +102,17 @@ namespace Fleetoria
         }
         public void ClearData()
         {
-            matrixOfBattle = new int[10, 10];
-            health = 0;
+            MatrixOfBattle = new int[10, 10];
+            Health = 0;
         }
         public bool IsShipPresent(int row, int col)
         {
-            return matrixOfBattle[row - 1, col - 1] == 1;
+            return MatrixOfBattle[row - 1, col - 1] == 1;
         }
         public void DestroyDeck(int row, int col)
         {
-            matrixOfBattle[row - 1, col - 1] = -1;
-            health -= 1;
+            MatrixOfBattle[row - 1, col - 1] = -1;
+            Health -= 1;
         }
         public bool IsShipDestroyed(int row, int col)
         {
@@ -158,21 +122,21 @@ namespace Fleetoria
             if (r < 0 || r >= 10 || c < 0 || c >= 10)
                 return false;
 
-            if (matrixOfBattle[r, c] != -1 && matrixOfBattle[r, c] != 1)
+            if (MatrixOfBattle[r, c] != -1 && MatrixOfBattle[r, c] != 1)
                 return false;
 
             int left = c;
-            while (left > 0 && (matrixOfBattle[r, left - 1] == 1 || matrixOfBattle[r, left - 1] == -1))
+            while (left > 0 && (MatrixOfBattle[r, left - 1] == 1 || MatrixOfBattle[r, left - 1] == -1))
                 left--;
 
             int right = c;
-            while (right < 9 && (matrixOfBattle[r, right + 1] == 1 || matrixOfBattle[r, right + 1] == -1))
+            while (right < 9 && (MatrixOfBattle[r, right + 1] == 1 || MatrixOfBattle[r, right + 1] == -1))
                 right++;
 
             bool horizontalDestroyed = true;
             for (int i = left; i <= right; i++)
             {
-                if (matrixOfBattle[r, i] != -1)
+                if (MatrixOfBattle[r, i] != -1)
                 {
                     horizontalDestroyed = false;
                     break;
@@ -183,17 +147,17 @@ namespace Fleetoria
                 return true;
 
             int up = r;
-            while (up > 0 && (matrixOfBattle[up - 1, c] == 1 || matrixOfBattle[up - 1, c] == -1))
+            while (up > 0 && (MatrixOfBattle[up - 1, c] == 1 || MatrixOfBattle[up - 1, c] == -1))
                 up--;
 
             int down = r;
-            while (down < 9 && (matrixOfBattle[down + 1, c] == 1 || matrixOfBattle[down + 1, c] == -1))
+            while (down < 9 && (MatrixOfBattle[down + 1, c] == 1 || MatrixOfBattle[down + 1, c] == -1))
                 down++;
 
             bool verticalDestroyed = true;
             for (int i = up; i <= down; i++)
             {
-                if (matrixOfBattle[i, c] != -1)
+                if (MatrixOfBattle[i, c] != -1)
                 {
                     verticalDestroyed = false;
                     break;
@@ -203,7 +167,7 @@ namespace Fleetoria
             if (verticalDestroyed && down > up)
                 return true;
 
-            return matrixOfBattle[r, c] == -1 && left == right && up == down;
+            return MatrixOfBattle[r, c] == -1 && left == right && up == down;
         }
         public List<(int row, int col)> GetDestroyedShipCells(int row, int col)
         {
@@ -214,21 +178,21 @@ namespace Fleetoria
             if (r < 0 || r >= 10 || c < 0 || c >= 10)
                 return result;
 
-            if (matrixOfBattle[r, c] != -1 && matrixOfBattle[r, c] != 1)
+            if (MatrixOfBattle[r, c] != -1 && MatrixOfBattle[r, c] != 1)
                 return result;
 
             int left = c;
-            while (left > 0 && (matrixOfBattle[r, left - 1] == 1 || matrixOfBattle[r, left - 1] == -1))
+            while (left > 0 && (MatrixOfBattle[r, left - 1] == 1 || MatrixOfBattle[r, left - 1] == -1))
                 left--;
 
             int right = c;
-            while (right < 9 && (matrixOfBattle[r, right + 1] == 1 || matrixOfBattle[r, right + 1] == -1))
+            while (right < 9 && (MatrixOfBattle[r, right + 1] == 1 || MatrixOfBattle[r, right + 1] == -1))
                 right++;
 
             bool horizontalDestroyed = true;
             for (int i = left; i <= right; i++)
             {
-                if (matrixOfBattle[r, i] != -1)
+                if (MatrixOfBattle[r, i] != -1)
                 {
                     horizontalDestroyed = false;
                     break;
@@ -243,17 +207,17 @@ namespace Fleetoria
             }
 
             int up = r;
-            while (up > 0 && (matrixOfBattle[up - 1, c] == 1 || matrixOfBattle[up - 1, c] == -1))
+            while (up > 0 && (MatrixOfBattle[up - 1, c] == 1 || MatrixOfBattle[up - 1, c] == -1))
                 up--;
 
             int down = r;
-            while (down < 9 && (matrixOfBattle[down + 1, c] == 1 || matrixOfBattle[down + 1, c] == -1))
+            while (down < 9 && (MatrixOfBattle[down + 1, c] == 1 || MatrixOfBattle[down + 1, c] == -1))
                 down++;
 
             bool verticalDestroyed = true;
             for (int i = up; i <= down; i++)
             {
-                if (matrixOfBattle[i, c] != -1)
+                if (MatrixOfBattle[i, c] != -1)
                 {
                     verticalDestroyed = false;
                     break;
@@ -267,7 +231,7 @@ namespace Fleetoria
                 return result;
             }
 
-            if (matrixOfBattle[r, c] == -1 && left == right && up == down)
+            if (MatrixOfBattle[r, c] == -1 && left == right && up == down)
             {
                 result.Add((r + 1, c + 1));
                 return result;

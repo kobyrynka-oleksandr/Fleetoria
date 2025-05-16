@@ -82,7 +82,7 @@ namespace Fleetoria
             }
         };
 
-        public void AddShipsToPanel(Panel panel, Player player, Grid grid)
+        public void AddShipsToPanel(Panel panel, PlayerHuman player, Grid grid)
         {
             panel.Children.Clear();
             var deckCounts = new List<int> { 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
@@ -165,15 +165,41 @@ namespace Fleetoria
             if (!grid.Children.Contains(ship))
                 grid.Children.Add(ship);
         }
-        public void ResetBattleGrid(Grid grid, Player player, Panel panel)
+        public void ResetBattleGrid(Grid grid, PlayerHuman player, Panel panel)
         {
-            var shipsToRemove = grid.Children.OfType<UIElement>().Where(el => el is Ship).ToList();
+            var elementsToKeep = grid.Children.OfType<UIElement>()
+                .Where(el =>
+                    el is Border border &&
+                    (Grid.GetRow(border) == 0 || Grid.GetColumn(border) == 0 || border.Tag != null))
+                .ToHashSet();
+
+            var elementsToRemove = grid.Children.OfType<UIElement>()
+                .Where(el => !elementsToKeep.Contains(el))
+                .ToList();
+
+            foreach (var element in elementsToRemove)
+                grid.Children.Remove(element);
+
             player.ClearData();
-
-            foreach (var ship in shipsToRemove)
-                grid.Children.Remove(ship);
-
             AddShipsToPanel(panel, player, grid);
+        }
+
+        public void ResetBattleGrid(Grid grid, PlayerBot player)
+        {
+            var elementsToKeep = grid.Children.OfType<UIElement>()
+                .Where(el =>
+                    el is Border border &&
+                    (Grid.GetRow(border) == 0 || Grid.GetColumn(border) == 0 || border.Tag != null))
+                .ToHashSet();
+
+            var elementsToRemove = grid.Children.OfType<UIElement>()
+                .Where(el => !elementsToKeep.Contains(el))
+                .ToList();
+
+            foreach (var element in elementsToRemove)
+                grid.Children.Remove(element);
+
+            player.ClearData();
         }
         public bool TryPlaceShipRandomly(Grid grid, Panel panel, Player player, Ship ship, Random random)
         {
