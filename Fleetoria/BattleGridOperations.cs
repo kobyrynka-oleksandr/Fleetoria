@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
+using System.Windows.Media.Imaging;
+using System.Windows.Input;
 
 namespace Fleetoria
 {
@@ -82,6 +84,54 @@ namespace Fleetoria
             }
         };
 
+        public void CreateOverlapGridForBot(Grid grid, MouseButtonEventHandler onClickHandler)
+        {
+            int gridSize = 10;
+
+            for (int i = 0; i <= gridSize; i++)
+            {
+                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            }
+
+            var topLeftCell = new Border { Background = Brushes.White, BorderThickness = new Thickness(1), BorderBrush = Brushes.Black };
+            Grid.SetRow(topLeftCell, 0); Grid.SetColumn(topLeftCell, 0);
+            grid.Children.Add(topLeftCell);
+
+            for (int col = 1; col <= gridSize; col++)
+            {
+                var headerCell = CreateHeaderCell(Letters[col - 1].ToString());
+                Grid.SetRow(headerCell, 0); Grid.SetColumn(headerCell, col);
+                grid.Children.Add(headerCell);
+            }
+
+            for (int row = 1; row <= gridSize; row++)
+            {
+                var headerCell = CreateHeaderCell(Numbers[row - 1].ToString());
+                Grid.SetRow(headerCell, row); Grid.SetColumn(headerCell, 0);
+                grid.Children.Add(headerCell);
+            }
+
+            for (int row = 1; row <= gridSize; row++)
+            {
+                for (int col = 1; col <= gridSize; col++)
+                {
+                    var cell = new Border
+                    {
+                        BorderThickness = new Thickness(1),
+                        BorderBrush = Brushes.Black,
+                        Background = Brushes.White,
+                        Tag = $"{Numbers[col - 1]} {Numbers[row - 1]}"
+                    };
+
+                    Grid.SetRow(cell, row);
+                    Grid.SetColumn(cell, col);
+                    cell.MouseLeftButtonDown += onClickHandler;
+
+                    grid.Children.Add(cell);
+                }
+            }
+        }
         public void AddShipsToPanel(Panel panel, PlayerHuman player, Grid grid)
         {
             panel.Children.Clear();
@@ -270,6 +320,20 @@ namespace Fleetoria
                 }
             }
         }
+        public Image CreateMark()
+        {
+            var bitmap = new BitmapImage(new Uri("pack://application:,,,/Resources/Mark.png"));
 
+            Image mark = new Image
+            {
+                Source = bitmap,
+                Stretch = Stretch.Uniform,
+                Width = bitmap.PixelWidth,
+                Height = bitmap.PixelHeight,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            return mark;
+        }
     }
 }

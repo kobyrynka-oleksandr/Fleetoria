@@ -83,7 +83,7 @@ namespace Fleetoria
             {
                 From = 1,
                 To = 0,
-                Duration = TimeSpan.FromSeconds(3),
+                Duration = TimeSpan.FromSeconds(2),
                 BeginTime = TimeSpan.FromSeconds(0.6),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
             };
@@ -104,6 +104,8 @@ namespace Fleetoria
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            mainWindow.MainFrame.Navigate(new SettingsPage());
 
         }
 

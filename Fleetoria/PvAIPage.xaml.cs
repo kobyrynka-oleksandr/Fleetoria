@@ -136,93 +136,33 @@ namespace Fleetoria
             {
                 Bot = new PlayerEasyBot();
             }
+            else if (selectedDifficultyButton == HardButton)
+            {
+                CustomMessageBox.Show("Not Yet!", "OK");
+                return;
+            }
+
             bgOps.AddShipsToBotGrid(LabeledBattleGridBot, Bot);
 
             LabeledBattleGridOverlap.Children.Clear();
             LabeledBattleGridOverlap.RowDefinitions.Clear();
             LabeledBattleGridOverlap.ColumnDefinitions.Clear();
 
-            CreateOverlapGridForBot(LabeledBattleGridOverlap);
+            bgOps.CreateOverlapGridForBot(LabeledBattleGridOverlap, OverlapCell_MouseLeftButtonDown);
 
             StartButton.Visibility = Visibility.Collapsed;
             DifficultyButtons.Visibility = Visibility.Collapsed;
             ResetButton.Visibility = Visibility.Collapsed;
             ShuffleButton.Visibility = Visibility.Collapsed;
             ShipBorder.Visibility = Visibility.Collapsed;
+
+            TurnArrowCanvas.Visibility = Visibility.Visible;
+
+            HumanHealthBorder.Visibility = Visibility.Visible;
+            BotHealthBorder.Visibility = Visibility.Visible;
+            UpdateHealthDisplays();
         }
 
-        private void CreateOverlapGridForBot(Grid grid)
-        {
-            int gridSize = 10;
-
-            for (int i = 0; i <= gridSize; i++)
-            {
-                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            }
-
-            var topLeftCell = new Border
-            {
-                Background = Brushes.White,
-                BorderThickness = new Thickness(1),
-                BorderBrush = Brushes.Black
-            };
-            Grid.SetRow(topLeftCell, 0);
-            Grid.SetColumn(topLeftCell, 0);
-            grid.Children.Add(topLeftCell);
-
-            for (int col = 1; col <= gridSize; col++)
-            {
-                var headerCell = bgOps.CreateHeaderCell(Letters[col - 1].ToString());
-                Grid.SetRow(headerCell, 0);
-                Grid.SetColumn(headerCell, col);
-                grid.Children.Add(headerCell);
-            }
-
-            for (int row = 1; row <= gridSize; row++)
-            {
-                var headerCell = bgOps.CreateHeaderCell(Numbers[row - 1].ToString());
-                Grid.SetRow(headerCell, row);
-                Grid.SetColumn(headerCell, 0);
-                grid.Children.Add(headerCell);
-            }
-
-            for (int row = 1; row <= gridSize; row++)
-            {
-                for (int col = 1; col <= gridSize; col++)
-                {
-                    var cell = new Border
-                    {
-                        BorderThickness = new Thickness(1),
-                        BorderBrush = Brushes.Black,
-                        Background = Brushes.White,
-                        Tag = $"{Numbers[col - 1]} {Numbers[row - 1]}"
-                    };
-
-                    Grid.SetRow(cell, row);
-                    Grid.SetColumn(cell, col);
-
-                    cell.MouseLeftButtonDown += OverlapCell_MouseLeftButtonDown;
-
-                    grid.Children.Add(cell);
-                }
-            }
-        }
-        private static Image CreateMark()
-        {
-            var bitmap = new BitmapImage(new Uri("pack://application:,,,/Resources/Mark.png"));
-
-            Image mark = new Image
-            {
-                Source = bitmap,
-                Stretch = Stretch.Uniform,
-                Width = bitmap.PixelWidth,
-                Height = bitmap.PixelHeight,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            return mark;
-        }
         private async void OverlapCell_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (isBotTurn) return;
@@ -248,6 +188,7 @@ namespace Fleetoria
 
                 if (playerResult == AttackResult.Miss)
                 {
+                    UpdateArrowDirection();
                     await BotTurn();
                 }
             }
@@ -255,7 +196,7 @@ namespace Fleetoria
 
         private AttackResult AttackCell(Player target, Border cell, int row, int col, Grid grid)
         {
-            Image mark = CreateMark();
+            Image mark = bgOps.CreateMark();
             Grid.SetRow(mark, row);
             Grid.SetColumn(mark, col);
             grid.Children.Add(mark);
@@ -264,6 +205,7 @@ namespace Fleetoria
             {
                 cell.Background = new SolidColorBrush(Color.FromArgb(255, 247, 118, 106));
                 target.DestroyDeck(row, col);
+                UpdateHealthDisplays();
 
                 if (target.IsShipDestroyed(row, col))
                 {
@@ -288,6 +230,7 @@ namespace Fleetoria
         private async Task BotTurn()
         {
             isBotTurn = true;
+            UpdateArrowDirection();
 
             await Task.Delay(700);
 
@@ -296,7 +239,7 @@ namespace Fleetoria
             {
                 var cellForAttack = Bot.GetCellForAttack();
 
-                Image mark = CreateMark();
+                Image mark = bgOps.CreateMark();
 
                 Border markContainer = new Border
                 {
@@ -320,6 +263,7 @@ namespace Fleetoria
                 {
                     markContainer.Background = new SolidColorBrush(Color.FromArgb(125, 247, 118, 106));
                     Human.DestroyDeck(row, col);
+                    UpdateHealthDisplays();
 
                     if (Human.IsShipDestroyed(row, col))
                     {
@@ -339,6 +283,7 @@ namespace Fleetoria
             } while (botResult == AttackResult.Hit && Human.Health > 0);
 
             isBotTurn = false;
+            UpdateArrowDirection();
 
             if (Human.Health == 0)
             {
@@ -361,6 +306,11 @@ namespace Fleetoria
             LabeledBattleGridOverlap.Children.Clear();
             LabeledBattleGridOverlap.RowDefinitions.Clear();
             LabeledBattleGridOverlap.ColumnDefinitions.Clear();
+
+            TurnArrowCanvas.Visibility = Visibility.Collapsed;
+
+            HumanHealthBorder.Visibility = Visibility.Collapsed;
+            BotHealthBorder.Visibility = Visibility.Collapsed;
 
             isBotTurn = false;
 
@@ -399,7 +349,7 @@ namespace Fleetoria
             {
                 for (int j = startJ; j <= stopJ; j++)
                 {
-                    Image mark = CreateMark();
+                    Image mark = bgOps.CreateMark();
 
                     bool cellOccupied = LabeledBattleGridOverlap.Children
                                     .OfType<Image>()
@@ -429,7 +379,7 @@ namespace Fleetoria
             {
                 for (int j = startJ; j <= stopJ; j++)
                 {
-                    Image mark = CreateMark();
+                    Image mark = bgOps.CreateMark();
 
                     bool cellOccupied = grid.Children
                                     .OfType<Image>()
@@ -445,6 +395,16 @@ namespace Fleetoria
                     }
                 }
             }
+        }
+        private void UpdateArrowDirection()
+        {
+            var rotate = (RotateTransform)TurnArrowImage.RenderTransform;
+            rotate.Angle = isBotTurn ? 180 : 0;
+        }
+        private void UpdateHealthDisplays()
+        {
+            HumanHealthText.Text = $"Human Health: {Human.Health}";
+            BotHealthText.Text = $"Bot Health: {Bot.Health}";
         }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {

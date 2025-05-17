@@ -43,6 +43,10 @@
                     VerticalAlignment="Center"/>
             </Border>
 
+            <Border x:Name="HumanHealthBorder" Grid.Row="1" Margin="170, 10" Height="40" BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="5" VerticalAlignment="Top" Visibility="Collapsed">
+                <TextBlock x:Name="HumanHealthText" FontSize="20" FontWeight="Bold" Foreground="#1070FF" TextAlignment="Center" />
+            </Border>
+
             <Button x:Name="ResetButton"
                     Content="🔁"
                     FontStyle="Normal"
@@ -85,6 +89,25 @@
         Height="70"/>
         </Grid>
 
+        <Canvas Grid.Column="0" Grid.ColumnSpan="2"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Top"
+        Margin="0,210"
+        Width="60"
+        Height="60"
+        Visibility="Collapsed"
+        x:Name="TurnArrowCanvas">
+            <Image x:Name="TurnArrowImage"
+           Width="60"
+           Height="60"
+           Source="/Resources/TurnArrow.png" 
+                RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <RotateTransform Angle="0" />
+                </Image.RenderTransform>
+            </Image>
+        </Canvas>
+
         <Grid x:Name="BattleGridBot" Grid.Column="1">
 
             <Grid.RowDefinitions>
@@ -116,6 +139,10 @@
                         <Button Style="{StaticResource FlatButtonStyle}" FontSize="15" BorderThickness="1" x:Name="HardButton" Content="Hard" Width="70" Margin="5" Click="DifficultyButton_Click"/>
                     </StackPanel>
                 </StackPanel>
+            </Border>
+
+            <Border x:Name="BotHealthBorder" Grid.Row="1" Margin="170, 10" Height="40" BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="5" VerticalAlignment="Top" Visibility="Collapsed">
+                <TextBlock x:Name="BotHealthText" FontSize="20" FontWeight="Bold" Foreground="#1070FF" TextAlignment="Center" />
             </Border>
 
             <Button x:Name="StartButton"

@@ -74,8 +74,15 @@
     <Compile Include="SelectGameModePage.xaml.cs">
       <DependentUpon>SelectGameModePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ship.cs" />
     <Page Include="CustomMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -162,6 +169,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Mark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\TurnArrow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

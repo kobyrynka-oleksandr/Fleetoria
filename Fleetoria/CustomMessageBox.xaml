@@ -21,7 +21,6 @@
                    FontSize="20"
                    FontWeight="Medium"
                    FontFamily="Evo 2"
-                   FontStyle="Italic"
                    Foreground="Black"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"

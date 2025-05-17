@@ -35,6 +35,7 @@ namespace Fleetoria
                 {
                     Style = (Style)FindResource("FlatButtonStyle"),
                     FontSize = 16,
+                    FontStyle = FontStyles.Normal,
                     FontWeight = FontWeights.Normal,
                     Content = btnText,
                     Margin = new Thickness(10, 0, 10, 0),
