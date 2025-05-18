@@ -11,8 +11,8 @@ namespace Fleetoria
         public PlayerHuman() : base() { }
         public void ClearMatrixWhenShipMovedOnGrid(int row, int col, int deckCount, bool isRotated)
         {
-            int rows = MatrixOfBattle.GetLength(0);
-            int cols = MatrixOfBattle.GetLength(1);
+            int rows = matrixOfBattle.GetLength(0);
+            int cols = matrixOfBattle.GetLength(1);
 
             for (int i = 0; i < deckCount; i++)
             {
@@ -21,7 +21,7 @@ namespace Fleetoria
 
                 if (r >= 0 && r < rows && c >= 0 && c < cols)
                 {
-                    MatrixOfBattle[r, c] = 0;
+                    matrixOfBattle[r, c] = 0;
                 }
             }
 
@@ -36,14 +36,14 @@ namespace Fleetoria
                 {
                     if (r >= 0 && r < rows && c >= 0 && c < cols)
                     {
-                        if (MatrixOfBattle[r, c] == 2 && !HasAdjacentShip(r, c))
+                        if (matrixOfBattle[r, c] == 2 && !HasAdjacentShip(r, c))
                         {
-                            MatrixOfBattle[r, c] = 0;
+                            matrixOfBattle[r, c] = 0;
                         }
                     }
                 }
             }
-            Health -= deckCount;
+            health -= deckCount;
         }
     }
 }

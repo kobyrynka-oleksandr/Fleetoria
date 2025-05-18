@@ -17,17 +17,29 @@ namespace Fleetoria
 {
     public partial class SettingsPage : PageWithScaling
     {
+        private SettingsViewModel viewModel;
+
         public SettingsPage()
         {
             InitializeComponent();
+            viewModel = new SettingsViewModel();
+            this.DataContext = viewModel;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (NavigationService.CanGoBack)
+            var result = CustomMessageBox.Show("Save changes?", "Yes", "No");
+            if (result == CustomMessageBox.MessageBoxResult.Yes)
             {
-                NavigationService.GoBack();
+                SettingsManager.SaveSettings(viewModel.ToSettingsData());
             }
+            else if (result == CustomMessageBox.MessageBoxResult.No)
+            {
+                return;
+            }
+
+            if (NavigationService.CanGoBack)
+                NavigationService.GoBack();
         }
     }
 }

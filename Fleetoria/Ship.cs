@@ -45,8 +45,12 @@ namespace Fleetoria
 
         private void LoadShipImage()
         {
+            var skinFolder = SettingsManager.LoadSettings().SelectedSkinFolder ?? "Ship_skin_1";
+
             string imageName = isRotated ? $"{baseImageName}_rotated.png" : $"{baseImageName}.png";
-            var bitmap = new BitmapImage(new Uri($"pack://application:,,,/Resources/Ship_skins/Ship_skin_1/{imageName}"));
+
+            var bitmap = new BitmapImage(new Uri($"pack://application:,,,/Resources/Ship_skins/{skinFolder}/{imageName}"));
+
 
             ShipImage = new Image
             {

@@ -12,50 +12,79 @@
         <ImageBrush ImageSource="/Resources/Back_Ground_Main.png" Stretch="Fill" />
     </local:PageWithScaling.Background>
 
+    <local:PageWithScaling.Resources>
+        <DataTemplate x:Key="ImageItemTemplate">
+            <Image Source="{Binding}" Width="210" Height="96" Stretch="Uniform"/>
+        </DataTemplate>
+        <DataTemplate x:Key="ImageSelectedItemTemplate">
+            <Image Source="{Binding}" Width="210" Height="96" Stretch="Uniform"/>
+        </DataTemplate>
+    </local:PageWithScaling.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
-        BorderThickness="3" BorderBrush="Black" Background="White"
-        CornerRadius="10" Margin="10, 10">
+        <Border Grid.Column="1" Grid.Row="0"
+            BorderThickness="3" BorderBrush="Black" Background="White"
+            CornerRadius="10" Margin="10">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical" >
+                <TextBlock Text="Settings" Foreground="Black" FontSize="40" FontStyle="Italic"
+                       FontFamily="Evo 2" FontWeight="Medium" Margin="0,0,0,30" TextAlignment="Center"/>
 
-                <TextBlock Text="Settings" Foreground="Black" FontSize="40" FontStyle="Italic" FontFamily="Evo 2"
-                   FontWeight="Medium" Margin="0,0,0,80" TextAlignment="Center" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Music Volume" Foreground="Black" FontSize="25" FontWeight="SemiBold" Margin="0,0,0,30" HorizontalAlignment="Center" />
-                <Slider Minimum="0" Maximum="100" Value="50" IsSnapToTickEnabled="True"
-                Height="40" Margin="0,0,0,30" Width="300"/>
+                    <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="Music Volume" FontSize="25" FontWeight="SemiBold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                        <Slider Minimum="0" Maximum="100"
+                            Value="{Binding MusicVolume, Mode=TwoWay}"
+                            TickFrequency="10"
+                            IsSnapToTickEnabled="True"
+                            Width="200" Margin="0,0,0,20"/>
 
-                <TextBlock Text="Interaction Sounds" Foreground="Black" FontSize="25" FontWeight="SemiBold" Margin="0,0,0,30" HorizontalAlignment="Center" />
-                <Slider Minimum="0" Maximum="100" Value="50" IsSnapToTickEnabled="True"
-                Height="40" Margin="0,0,0,30" Width="300"/>
+                        <TextBlock Text="Interaction Sounds" FontSize="25" FontWeight="SemiBold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                        <Slider Minimum="0" Maximum="100"
+                            Value="{Binding InteractionVolume, Mode=TwoWay}"
+                            TickFrequency="10"
+                            IsSnapToTickEnabled="True"
+                            Width="200"/>
+                    </StackPanel>
 
-                <TextBlock Text="Skin Selection" Foreground="Black" FontSize="25" FontWeight="SemiBold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
-                <ComboBox Height="70" FontSize="18" Margin="0,0,0,10" Width="300">
+                    <Separator Grid.Column="1" Margin="20,0" Width="2" Background="Gray"/>
 
-                </ComboBox>
-
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="Skin Selection" FontSize="25" FontWeight="SemiBold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                        <Image Width="210" Height="96" Source="{Binding SelectedSkin}" Margin="0,0,0,20"/>
+                        <ComboBox Width="240" Height="110"
+                              ItemsSource="{Binding SkinImages}"
+                              SelectedItem="{Binding SelectedSkin, Mode=TwoWay}"
+                              ItemTemplate="{StaticResource ImageItemTemplate}"/>
+                    </StackPanel>
+                </Grid>
             </StackPanel>
         </Border>
 
         <Button x:Name="BackButton"
-                Content="Back"
-                Grid.Column="1"
-                Grid.Row="3"
-                Click="BackButton_Click"
-                Style="{StaticResource FlatButtonStyle}">
+            Grid.Column="1" Grid.Row="1"
+            Content="Back"
+            HorizontalAlignment="Center"
+            Click="BackButton_Click"
+            Style="{StaticResource FlatButtonStyle}"
+            Width="200"
+            Height="100">
             <Button.RenderTransform>
                 <TranslateTransform x:Name="BtnBackTransform"/>
             </Button.RenderTransform>

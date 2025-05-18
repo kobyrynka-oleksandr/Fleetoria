@@ -121,7 +121,7 @@ namespace Fleetoria
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Human.Health != 20)
+            if (Human.GetHealth() != 20)
             {
                 CustomMessageBox.Show("Place all ships!", "OK");
                 return;
@@ -180,7 +180,7 @@ namespace Fleetoria
 
                 AttackResult playerResult = AttackCell(Bot, cell, row, column, LabeledBattleGridOverlap);
 
-                if (Bot.Health == 0)
+                if (Bot.GetHealth() == 0)
                 {
                     EndGame("Human win!");
                     return;
@@ -280,12 +280,12 @@ namespace Fleetoria
 
                 await Task.Delay(500);
 
-            } while (botResult == AttackResult.Hit && Human.Health > 0);
+            } while (botResult == AttackResult.Hit && Human.GetHealth() > 0);
 
             isBotTurn = false;
             UpdateArrowDirection();
 
-            if (Human.Health == 0)
+            if (Human.GetHealth() == 0)
             {
                 EndGame("Bot win!");
             }
@@ -403,8 +403,8 @@ namespace Fleetoria
         }
         private void UpdateHealthDisplays()
         {
-            HumanHealthText.Text = $"Human Health: {Human.Health}";
-            BotHealthText.Text = $"Bot Health: {Bot.Health}";
+            HumanHealthText.Text = $"Human Health: {Human.GetHealth()}";
+            BotHealthText.Text = $"Bot Health: {Bot.GetHealth()}";
         }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
