@@ -212,11 +212,11 @@ namespace Fleetoria
 
                     if (target == Bot)
                     {
-                        MarkDestroyedShip(destroyedShip);
+                        bgOps.MarkDestroyedShip(destroyedShip, LabeledBattleGridOverlap);
                     }
                     else
                     {
-                        MarkDestroyedShip(destroyedShip, grid);
+                        bgOps.MarkDestroyedShip(destroyedShip, grid, Bot);
                     }
                 }
 
@@ -267,7 +267,7 @@ namespace Fleetoria
                     if (Human.IsShipDestroyed(row, col))
                     {
                         var destroyed = Human.GetDestroyedShipCells(row, col);
-                        MarkDestroyedShip(destroyed, LabeledBattleGridHuman);
+                        bgOps.MarkDestroyedShip(destroyed, LabeledBattleGridHuman, Bot);
                     }
 
                     botResult = AttackResult.Hit;
@@ -324,78 +324,6 @@ namespace Fleetoria
                     return (Border)element;
             }
             return null;
-        }
-        private void MarkDestroyedShip(List<(int row, int col)> destroyedShipCells)
-        {
-            foreach (var (row, col) in destroyedShipCells)
-            {
-                var cell = LabeledBattleGridOverlap.Children
-                             .OfType<Border>()
-                             .FirstOrDefault(b => Grid.GetRow(b) == row && Grid.GetColumn(b) == col);
-                if (cell != null)
-                {
-                    cell.Opacity = 0.5;
-                }
-            }
-
-            int size = destroyedShipCells.Count - 1;
-
-            int startI = destroyedShipCells[0].row - 1 > 0 ? destroyedShipCells[0].row - 1 : destroyedShipCells[0].row;
-            int stopI = destroyedShipCells[size].row + 1 < 11 ? destroyedShipCells[size].row + 1 : destroyedShipCells[size].row;
-
-            int startJ = destroyedShipCells[0].col - 1 > 0 ? destroyedShipCells[0].col - 1 : destroyedShipCells[0].col;
-            int stopJ = destroyedShipCells[size].col + 1 < 11 ? destroyedShipCells[size].col + 1 : destroyedShipCells[size].col;
-
-            for (int i = startI; i <= stopI; i++)
-            {
-                for (int j = startJ; j <= stopJ; j++)
-                {
-                    Image mark = bgOps.CreateMark();
-
-                    bool cellOccupied = LabeledBattleGridOverlap.Children
-                                    .OfType<Image>()
-                                    .Any(img => Grid.GetRow(img) == i && Grid.GetColumn(img) == j);
-
-                    if (!cellOccupied)
-                    {
-                        Grid.SetRow(mark, i);
-                        Grid.SetColumn(mark, j);
-
-                        LabeledBattleGridOverlap.Children.Add(mark);
-                    }
-                }
-            }
-        }
-        private void MarkDestroyedShip(List<(int row, int col)> destroyedShipCells, Grid grid)
-        {
-            int size = destroyedShipCells.Count - 1;
-
-            int startI = destroyedShipCells[0].row - 1 > 0 ? destroyedShipCells[0].row - 1 : destroyedShipCells[0].row;
-            int stopI = destroyedShipCells[size].row + 1 < 11 ? destroyedShipCells[size].row + 1 : destroyedShipCells[size].row;
-
-            int startJ = destroyedShipCells[0].col - 1 > 0 ? destroyedShipCells[0].col - 1 : destroyedShipCells[0].col;
-            int stopJ = destroyedShipCells[size].col + 1 < 11 ? destroyedShipCells[size].col + 1 : destroyedShipCells[size].col;
-
-            for (int i = startI; i <= stopI; i++)
-            {
-                for (int j = startJ; j <= stopJ; j++)
-                {
-                    Image mark = bgOps.CreateMark();
-
-                    bool cellOccupied = grid.Children
-                                    .OfType<Image>()
-                                    .Any(img => Grid.GetRow(img) == i && Grid.GetColumn(img) == j);
-
-                    if (!cellOccupied)
-                    {
-                        Grid.SetRow(mark, i);
-                        Grid.SetColumn(mark, j);
-                        grid.Children.Add(mark);
-
-                        Bot.RemoveMarkedCell(i - 1, j - 1);
-                    }
-                }
-            }
         }
         private void UpdateArrowDirection()
         {

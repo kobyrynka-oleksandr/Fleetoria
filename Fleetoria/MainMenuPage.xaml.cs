@@ -35,8 +35,8 @@ namespace Fleetoria
             {
                 From = 1,
                 To = 0,
-                Duration = TimeSpan.FromSeconds(2),
-                BeginTime = TimeSpan.FromSeconds(0.6),
+                Duration = TimeSpan.FromSeconds(1.5),
+                BeginTime = TimeSpan.FromSeconds(0.5),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
             };
 
