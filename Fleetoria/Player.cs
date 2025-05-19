@@ -17,7 +17,6 @@ namespace Fleetoria
             return health;
         }
 
-
         public Player()
         {
             matrixOfBattle = new int[10, 10];

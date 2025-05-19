@@ -26,56 +26,8 @@ namespace Fleetoria
             InitializeComponent();
 
             WhiteOverlay.Visibility = Visibility.Visible;
-            Logo.Visibility = Visibility.Collapsed;
-            PlayButton.Visibility = Visibility.Collapsed;
-            SettingsButton.Visibility = Visibility.Collapsed;
-            ExitButton.Visibility = Visibility.Collapsed;
 
             FadeOutOverlay();
-
-            Loaded += AnimateAllButtons;
-        }
-
-        private void AnimateAllButtons(object sender, RoutedEventArgs e)
-        {
-            Loaded -= AnimateAllButtons;
-            AnimateElement(Logo, delaySeconds: 0.5);
-            AnimateElement(PlayButton, delaySeconds: 1);
-            AnimateElement(SettingsButton, delaySeconds: 1.5);
-            AnimateElement(ExitButton, delaySeconds: 2);
-        }
-
-        private void AnimateElement(FrameworkElement element, double delaySeconds)
-        {
-            double screenHeight = SystemParameters.PrimaryScreenHeight;
-
-            if (element.RenderTransform == null || !(element.RenderTransform is TranslateTransform))
-                element.RenderTransform = new TranslateTransform();
-
-            var animation = new DoubleAnimation
-            {
-                From = screenHeight,
-                To = 0,
-                Duration = TimeSpan.FromSeconds(1.2),
-                EasingFunction = new QuarticEase { EasingMode = EasingMode.EaseOut }
-            };
-
-            var storyboard = new Storyboard();
-            storyboard.Children.Add(animation);
-            Storyboard.SetTarget(animation, element);
-            Storyboard.SetTargetProperty(animation, new PropertyPath("RenderTransform.(TranslateTransform.Y)"));
-
-            var delayTimer = new System.Windows.Threading.DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(delaySeconds)
-            };
-            delayTimer.Tick += (s, args) =>
-            {
-                delayTimer.Stop();
-                element.Visibility = Visibility.Visible;
-                storyboard.Begin();
-            };
-            delayTimer.Start();
         }
         private void FadeOutOverlay()
         {

@@ -45,5 +45,13 @@ namespace Fleetoria
             }
             health -= deckCount;
         }
+        public void ChangeMatrixCellForMinus1(int row, int col)
+        {
+            matrixOfBattle[row, col] = -1;
+        }
+        public void ChangeMatrixCellBack(int row, int col)
+        {
+            matrixOfBattle[row, col] = 1;
+        }
     }
 }

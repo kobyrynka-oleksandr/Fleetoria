@@ -84,7 +84,7 @@ namespace Fleetoria
             }
         };
 
-        public void CreateOverlapGridForBot(Grid grid, MouseButtonEventHandler onClickHandler)
+        public void CreateOverlapGrid(Grid grid, MouseButtonEventHandler onClickHandler)
         {
             int gridSize = 10;
 

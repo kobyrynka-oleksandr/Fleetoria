@@ -48,9 +48,6 @@
                 Grid.Row="1"
                 Click="PlayButton_Click" 
                 Style="{StaticResource FlatButtonStyle}">
-            <Button.RenderTransform>
-                <TranslateTransform x:Name="BtnPlay"/>
-            </Button.RenderTransform>
         </Button>
 
         <Button x:Name="SettingsButton"
@@ -59,9 +56,6 @@
                 Grid.Row="2"
                 Click="SettingsButton_Click"
                 Style="{StaticResource FlatButtonStyle}">
-            <Button.RenderTransform>
-                <TranslateTransform x:Name="BtnSettings"/>
-            </Button.RenderTransform>
         </Button>
 
         <Button x:Name="ExitButton"
@@ -70,9 +64,6 @@
                 Grid.Row="3"
                 Click="ExitButton_Click"
                 Style="{StaticResource FlatButtonStyle}">
-            <Button.RenderTransform>
-                <TranslateTransform x:Name="BtnExit"/>
-            </Button.RenderTransform>
         </Button>
     </Grid>
 </local:PageWithScaling>

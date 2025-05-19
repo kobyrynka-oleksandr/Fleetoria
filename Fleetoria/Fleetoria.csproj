@@ -63,6 +63,9 @@
     <Compile Include="CustomMessageBox.xaml.cs">
       <DependentUpon>CustomMessageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LocalPvPPage.xaml.cs">
+      <DependentUpon>LocalPvPPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainMenuPage.xaml.cs">
       <DependentUpon>MainMenuPage.xaml</DependentUpon>
     </Compile>
@@ -70,6 +73,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="PlayerBot.cs" />
     <Compile Include="PlayerEasyBot.cs" />
+    <Compile Include="PlayerHardBot.cs" />
     <Compile Include="PlayerHuman.cs" />
     <Compile Include="PvAIPage.xaml.cs">
       <DependentUpon>PvAIPage.xaml</DependentUpon>
@@ -85,6 +89,10 @@
     <Compile Include="SettingsViewModel.cs" />
     <Compile Include="Ship.cs" />
     <Page Include="CustomMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LocalPvPPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

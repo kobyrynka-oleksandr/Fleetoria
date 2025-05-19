@@ -1,0 +1,233 @@
+﻿<local:PageWithScaling x:Class="Fleetoria.LocalPvPPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Fleetoria"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1280"
+      Title="LocalPvPPage">
+
+    <local:PageWithScaling.Background>
+        <ImageBrush ImageSource="/Resources/Back_Ground_Main.png" Stretch="Fill" />
+    </local:PageWithScaling.Background>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="BattleGridHuman1" Grid.Column="0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="480"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Width="400" Height="400">
+                <Grid x:Name="LabeledBattleGridHuman1" AllowDrop="True" DragOver="Ship_DragOver_Wrapper1" />
+            </Border>
+
+            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Width="400" Height="400">
+                <Grid x:Name="LabeledBattleGridOverlap1"/>
+            </Border>
+
+            <Border x:Name="ShipBorder1"
+            Grid.Row="1" 
+            BorderBrush="Black" 
+            BorderThickness="2" 
+            Background="White" 
+            CornerRadius="10"
+            Margin="90,10">
+                <WrapPanel x:Name="ShipPanel1" 
+                Orientation="Horizontal" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+            </Border>
+
+            <Border x:Name="HumanHealthBorder1" Grid.Row="1" Margin="170, 10" Height="40" BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="5" VerticalAlignment="Top" Visibility="Collapsed">
+                <TextBlock x:Name="HumanHealthText1" FontSize="20" FontWeight="Bold" Foreground="#1070FF" TextAlignment="Center" />
+            </Border>
+
+            <Button x:Name="PlacementButton1" 
+                    Content="Show placement"
+                    Click="PlacementButton1_Click"
+                    Grid.Row="1" 
+                    Style="{StaticResource FlatButtonStyle}" 
+                    VerticalAlignment="Bottom" 
+                    HorizontalAlignment="Center"
+                    FontSize="30"
+                    Margin="30, 20"
+                    Width="250"
+                    Height="50"
+                    Visibility="Collapsed"/>
+
+            <Button x:Name="ResetButton1"
+                Content="🔁"
+                FontStyle="Normal"
+                Grid.Row="0"
+                Click="ResetButton1_Click" 
+                Style="{StaticResource FlatButtonStyle}"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
+                BorderThickness="0"
+                Background="Transparent"
+                FontSize="35"
+                Margin="15,15"
+                Width="50"
+                Height="50"/>
+
+            <Button x:Name="ShuffleButton1"
+            Content="🔀"
+            FontStyle="Normal"
+            Grid.Row="1"
+            Click="ShuffleButton1_Click" 
+            Style="{StaticResource FlatButtonStyle}"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Right"
+            BorderThickness="0"
+            Background="Transparent"
+            FontSize="35"
+            Margin="15,15"
+            Width="50"
+            Height="50"/>
+
+            <Button Content="Back"
+                    FontSize="35"
+                    Grid.Row="2"
+                    Click="BackButton_Click" 
+                    Style="{StaticResource FlatButtonStyle}"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Left"
+                    Margin="30, 30"
+                    Width="180"
+                    Height="70"/>
+
+            <Button x:Name="ToSecondPlayerButton"
+        Content="To 2-d player"
+        FontSize="35"
+        Grid.Row="2"
+        Click="ToSecondPlayerButton_Click" 
+        Style="{StaticResource FlatButtonStyle}"
+        VerticalAlignment="Bottom"
+        HorizontalAlignment="Right"
+        Margin="30, 30"
+        Width="230"
+        Height="70"/>
+        </Grid>
+
+        <Canvas Grid.Column="0" Grid.ColumnSpan="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Margin="0,210"
+                Width="60"
+                Height="60"
+                Visibility="Collapsed"
+                x:Name="TurnArrowCanvas">
+            <Image x:Name="TurnArrowImage"
+                   Width="60"
+                   Height="60"
+                   Source="/Resources/TurnArrow.png" 
+                   RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <RotateTransform Angle="0" />
+                </Image.RenderTransform>
+            </Image>
+        </Canvas>
+
+        <Grid x:Name="BattleGridHuman2" Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="480"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Width="400" Height="400">
+                <Grid x:Name="LabeledBattleGridHuman2" AllowDrop="True" DragOver="Ship_DragOver_Wrapper2" />
+            </Border>
+
+            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Width="400" Height="400">
+                <Grid x:Name="LabeledBattleGridOverlap2"/>
+            </Border>
+
+            <Border x:Name="ShipBorder2"
+                    Grid.Row="1" 
+                    BorderBrush="Black" 
+                    BorderThickness="2" 
+                    Background="White" 
+                    CornerRadius="10"
+                    Margin="90,10"
+                    Visibility="Collapsed">
+                   <WrapPanel x:Name="ShipPanel2" 
+                              Orientation="Horizontal" 
+                              HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+            </Border>
+
+            <Border x:Name="HumanHealthBorder2" Grid.Row="1" Margin="170, 10" Height="40" BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="5" VerticalAlignment="Top" Visibility="Collapsed">
+                <TextBlock x:Name="HumanHealthText2" FontSize="20" FontWeight="Bold" Foreground="#1070FF" TextAlignment="Center" />
+            </Border>
+
+            <Button x:Name="PlacementButton2" 
+        Content="Show placement"
+        Click="PlacementButton2_Click"
+        Grid.Row="1" 
+        Style="{StaticResource FlatButtonStyle}" 
+        VerticalAlignment="Bottom" 
+        HorizontalAlignment="Center"
+        FontSize="30"
+        Margin="30, 20"
+        Width="250"
+        Height="50"
+        Visibility="Collapsed"/>
+
+            <Button x:Name="ResetButton2"
+        Content="🔁"
+        FontStyle="Normal"
+        Grid.Row="0"
+        Click="ResetButton2_Click" 
+        Style="{StaticResource FlatButtonStyle}"
+        VerticalAlignment="Top"
+        HorizontalAlignment="Right"
+        BorderThickness="0"
+        Background="Transparent"
+        FontSize="35"
+        Margin="15,15"
+        Width="50"
+        Height="50"
+        Visibility="Collapsed"/>
+
+            <Button x:Name="ShuffleButton2"
+    Content="🔀"
+    FontStyle="Normal"
+    Grid.Row="1"
+    Click="ShuffleButton2_Click" 
+    Style="{StaticResource FlatButtonStyle}"
+    VerticalAlignment="Top"
+    HorizontalAlignment="Right"
+    BorderThickness="0"
+    Background="Transparent"
+    FontSize="35"
+    Margin="15,15"
+    Width="50"
+    Height="50"
+    Visibility="Collapsed"/>
+
+            <Button x:Name="StartButton"
+        Content="Start"
+        FontSize="35"
+        Grid.Row="2"
+        Click="StartButton_Click" 
+        Style="{StaticResource FlatButtonStyle}"
+        VerticalAlignment="Bottom"
+        HorizontalAlignment="Right"
+        Margin="30, 30"
+        Width="230"
+        Height="70"
+        Visibility="Collapsed"/>
+        </Grid>
+    </Grid>
+</local:PageWithScaling>

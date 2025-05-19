@@ -131,15 +131,14 @@ namespace Fleetoria
                 CustomMessageBox.Show("Choose difficulty!", "OK");
                 return;
             }
-
+            LabeledBattleGridHuman.AllowDrop = false;
             if (selectedDifficultyButton == EasyButton)
             {
                 Bot = new PlayerEasyBot();
             }
             else if (selectedDifficultyButton == HardButton)
             {
-                CustomMessageBox.Show("Not Yet!", "OK");
-                return;
+                Bot = new PlayerHardBot(Human);
             }
 
             bgOps.AddShipsToBotGrid(LabeledBattleGridBot, Bot);
@@ -148,7 +147,7 @@ namespace Fleetoria
             LabeledBattleGridOverlap.RowDefinitions.Clear();
             LabeledBattleGridOverlap.ColumnDefinitions.Clear();
 
-            bgOps.CreateOverlapGridForBot(LabeledBattleGridOverlap, OverlapCell_MouseLeftButtonDown);
+            bgOps.CreateOverlapGrid(LabeledBattleGridOverlap, OverlapCell_MouseLeftButtonDown);
 
             StartButton.Visibility = Visibility.Collapsed;
             DifficultyButtons.Visibility = Visibility.Collapsed;
@@ -312,8 +311,10 @@ namespace Fleetoria
             HumanHealthBorder.Visibility = Visibility.Collapsed;
             BotHealthBorder.Visibility = Visibility.Collapsed;
 
-            isBotTurn = false;
+            LabeledBattleGridHuman.AllowDrop = true;
 
+            isBotTurn = false;
+            UpdateArrowDirection();
         }
         public Border GetCellFromGrid(Grid grid, int row, int column)
         {

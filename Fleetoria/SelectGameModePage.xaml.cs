@@ -32,7 +32,7 @@ namespace Fleetoria
 
         private void LocalPVPButton_Click(object sender, RoutedEventArgs e)
         {
-
+            NavigationService?.Navigate(new LocalPvPPage());
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
