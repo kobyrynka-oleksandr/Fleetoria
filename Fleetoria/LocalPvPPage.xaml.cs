@@ -144,6 +144,7 @@ namespace Fleetoria
                 return;
             }
             LabeledBattleGridHuman1.AllowDrop = false;
+            LabeledBattleGridHuman2.AllowDrop = true;
 
             ShipBorder1.Visibility = Visibility.Collapsed;
             ToSecondPlayerButton.Visibility = Visibility.Collapsed;
@@ -314,7 +315,7 @@ namespace Fleetoria
             ShowAndHidePlacement(isShowedPlayer2, LabeledBattleGridOverlap2, PlacementButton2);
 
             LabeledBattleGridHuman1.AllowDrop = true;
-            LabeledBattleGridHuman2.AllowDrop = true;
+            LabeledBattleGridHuman2.AllowDrop = false;
 
             isSecondHumanTurn = false;
             UpdateArrowDirection();
