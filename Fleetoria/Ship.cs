@@ -37,7 +37,7 @@ namespace Fleetoria
                 2 => "2Deck_Ship",
                 3 => "3Deck_Ship",
                 4 => "4Deck_Ship",
-                _ => throw new ArgumentException("Неприпустима кількість палуб")
+                _ => throw new ArgumentException("Invalid number of decks")
             };
 
             LoadShipImage();
