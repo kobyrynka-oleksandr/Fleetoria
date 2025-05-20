@@ -21,6 +21,9 @@ namespace Fleetoria
         PlayerHuman Human = new PlayerHuman();
         PlayerBot Bot;
 
+        string humanSkin = SettingsManager.LoadSettings().Player1Skin;
+        string botSkin = SettingsManager.LoadSettings().Player2Skin;
+
         private bool isBotTurn = false;
         private enum AttackResult { Miss, Hit }
 
@@ -38,7 +41,7 @@ namespace Fleetoria
 
             bgOps.CreateBattlefield(LabeledBattleGridHuman);
 
-            bgOps.AddShipsToPanel(ShipPanel, Human, LabeledBattleGridHuman);
+            bgOps.AddShipsToPanel(ShipPanel, Human, LabeledBattleGridHuman, humanSkin);
 
             bgOps.CreateBattlefield(LabeledBattleGridBot);
         }
@@ -83,12 +86,12 @@ namespace Fleetoria
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-            bgOps.ResetBattleGrid(LabeledBattleGridHuman, Human, ShipPanel);
+            bgOps.ResetBattleGrid(LabeledBattleGridHuman, Human, ShipPanel, humanSkin);
         }
 
         private void ShuffleButton_Click(object sender, RoutedEventArgs e)
         {
-            bgOps.ResetBattleGrid(LabeledBattleGridHuman, Human, ShipPanel);
+            bgOps.ResetBattleGrid(LabeledBattleGridHuman, Human, ShipPanel, humanSkin);
             var random = new Random();
 
             foreach (Ship ship in ShipPanel.Children.OfType<Ship>().ToList())
@@ -141,7 +144,7 @@ namespace Fleetoria
                 Bot = new PlayerHardBot(Human);
             }
 
-            bgOps.AddShipsToBotGrid(LabeledBattleGridBot, Bot);
+            bgOps.AddShipsToBotGrid(LabeledBattleGridBot, Bot, botSkin);
 
             LabeledBattleGridOverlap.Children.Clear();
             LabeledBattleGridOverlap.RowDefinitions.Clear();
@@ -300,7 +303,7 @@ namespace Fleetoria
             ShuffleButton.Visibility = Visibility.Visible;
             ShipBorder.Visibility = Visibility.Visible;
 
-            bgOps.ResetBattleGrid(LabeledBattleGridHuman, Human, ShipPanel);
+            bgOps.ResetBattleGrid(LabeledBattleGridHuman, Human, ShipPanel, humanSkin);
             bgOps.ResetBattleGrid(LabeledBattleGridBot, Bot);
             LabeledBattleGridOverlap.Children.Clear();
             LabeledBattleGridOverlap.RowDefinitions.Clear();

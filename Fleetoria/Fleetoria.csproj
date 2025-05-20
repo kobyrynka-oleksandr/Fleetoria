@@ -88,6 +88,9 @@
     </Compile>
     <Compile Include="SettingsViewModel.cs" />
     <Compile Include="Ship.cs" />
+    <Compile Include="ShipFactory.cs" />
+    <Compile Include="ShipWithFirstSkin.cs" />
+    <Compile Include="ShipWithSecondSkin.cs" />
     <Page Include="CustomMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -132,14 +132,14 @@ namespace Fleetoria
                 }
             }
         }
-        public void AddShipsToPanel(Panel panel, PlayerHuman player, Grid grid)
+        public void AddShipsToPanel(Panel panel, PlayerHuman player, Grid grid, string skinName)
         {
             panel.Children.Clear();
             var deckCounts = new List<int> { 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
 
             foreach (var count in deckCounts)
             {
-                var ship = new Ship(count);
+                var ship = ShipFactory.CreateShip(skinName, count);
 
                 ship.MouseLeftButtonDown += (s, e) =>
                 {
@@ -215,7 +215,7 @@ namespace Fleetoria
             if (!grid.Children.Contains(ship))
                 grid.Children.Add(ship);
         }
-        public void ResetBattleGrid(Grid grid, PlayerHuman player, Panel panel)
+        public void ResetBattleGrid(Grid grid, PlayerHuman player, Panel panel, string skinName)
         {
             var elementsToKeep = grid.Children.OfType<UIElement>()
                 .Where(el =>
@@ -231,7 +231,7 @@ namespace Fleetoria
                 grid.Children.Remove(element);
 
             player.ClearData();
-            AddShipsToPanel(panel, player, grid);
+            AddShipsToPanel(panel, player, grid, skinName);
         }
 
         public void ResetBattleGrid(Grid grid, PlayerBot player)
@@ -298,7 +298,7 @@ namespace Fleetoria
 
             return false;
         }
-        public void AddShipsToBotGrid(Grid grid, Player player)
+        public void AddShipsToBotGrid(Grid grid, Player player, string skinName)
         {
             var shipsToRemove = grid.Children.OfType<UIElement>().Where(el => el is Ship).ToList();
             player.ClearData();
@@ -311,7 +311,7 @@ namespace Fleetoria
 
             foreach (var count in deckCounts)
             {
-                var ship = new Ship(count);
+                var ship = ShipFactory.CreateShip(skinName, count);
 
                 if (!TryPlaceShipRandomly(grid, null, player, ship, random))
                 {

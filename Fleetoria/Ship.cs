@@ -20,6 +20,7 @@ namespace Fleetoria
 
         private string baseImageName;
         public bool IsRotatedDuringDrag { get; set; } = false;
+        protected virtual string SkinFolder => "Ship_skin_1";
 
         public Ship(int deckCount)
         {
@@ -45,12 +46,8 @@ namespace Fleetoria
 
         private void LoadShipImage()
         {
-            var skinFolder = SettingsManager.LoadSettings().SelectedSkinFolder ?? "Ship_skin_1";
-
             string imageName = isRotated ? $"{baseImageName}_rotated.png" : $"{baseImageName}.png";
-
-            var bitmap = new BitmapImage(new Uri($"pack://application:,,,/Resources/Ship_skins/{skinFolder}/{imageName}"));
-
+            var bitmap = new BitmapImage(new Uri($"pack://application:,,,/Resources/Ship_skins/{SkinFolder}/{imageName}"));
 
             ShipImage = new Image
             {

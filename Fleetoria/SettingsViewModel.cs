@@ -14,8 +14,9 @@ namespace Fleetoria
         public event PropertyChangedEventHandler PropertyChanged;
 
         private int _musicVolume;
-        private int _interactionVolume;
-        private string _selectedSkin;
+        private string _player1Skin;
+        private string _player2Skin;
+
         public ObservableCollection<string> SkinImages { get; }
 
         public int MusicVolume
@@ -24,16 +25,16 @@ namespace Fleetoria
             set { _musicVolume = value; OnPropertyChanged(); }
         }
 
-        public int InteractionVolume
+        public string Player1Skin
         {
-            get => _interactionVolume;
-            set { _interactionVolume = value; OnPropertyChanged(); }
+            get => _player1Skin;
+            set { _player1Skin = value; OnPropertyChanged(); }
         }
 
-        public string SelectedSkin
+        public string Player2Skin
         {
-            get => _selectedSkin;
-            set { _selectedSkin = value; OnPropertyChanged(); }
+            get => _player2Skin;
+            set { _player2Skin = value; OnPropertyChanged(); }
         }
 
         public SettingsViewModel()
@@ -43,23 +44,25 @@ namespace Fleetoria
         {
             $"{basePath}Ship_skin_1_logo.png",
             $"{basePath}Ship_skin_2_logo.png"
+            // Додавайте нові скіни тут
         };
 
             var settings = SettingsManager.LoadSettings();
 
             MusicVolume = settings.MusicVolume;
-            InteractionVolume = settings.InteractionVolume;
-            SelectedSkin = $"{basePath}{settings.SelectedSkinFolder}_logo.png";
+            Player1Skin = $"{basePath}{settings.Player1Skin}_logo.png";
+            Player2Skin = $"{basePath}{settings.Player2Skin}_logo.png";
         }
 
         public SettingsData ToSettingsData()
         {
-            string folderName = System.IO.Path.GetFileNameWithoutExtension(SelectedSkin).Replace("_logo", "");
+            string skin1 = System.IO.Path.GetFileNameWithoutExtension(Player1Skin).Replace("_logo", "");
+            string skin2 = System.IO.Path.GetFileNameWithoutExtension(Player2Skin).Replace("_logo", "");
             return new SettingsData
             {
                 MusicVolume = this.MusicVolume,
-                InteractionVolume = this.InteractionVolume,
-                SelectedSkinFolder = folderName
+                Player1Skin = skin1,
+                Player2Skin = skin2
             };
         }
 

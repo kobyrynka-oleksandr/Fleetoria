@@ -15,7 +15,12 @@ namespace Fleetoria
         public static SettingsData LoadSettings()
         {
             if (!File.Exists(settingsPath))
-                return new SettingsData { MusicVolume = 50, InteractionVolume = 50, SelectedSkinFolder = "Ship_skin_1" };
+                return new SettingsData
+                {
+                    MusicVolume = 50,
+                    Player1Skin = "Ship_skin_1",
+                    Player2Skin = "Ship_skin_2"
+                };
 
             string json = File.ReadAllText(settingsPath);
             return JsonConvert.DeserializeObject<SettingsData>(json);

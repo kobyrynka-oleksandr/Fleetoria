@@ -9,7 +9,7 @@ namespace Fleetoria
     public class SettingsData
     {
         public int MusicVolume { get; set; }
-        public int InteractionVolume { get; set; }
-        public string SelectedSkinFolder { get; set; }
+        public string Player1Skin { get; set; }
+        public string Player2Skin { get; set; }
     }
 }

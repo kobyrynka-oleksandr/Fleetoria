@@ -41,37 +41,41 @@
                        FontFamily="Evo 2" FontWeight="Medium" Margin="0,0,0,30" TextAlignment="Center"/>
 
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock Text="Music Volume" FontSize="25" FontWeight="SemiBold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
                         <Slider Minimum="0" Maximum="100"
                             Value="{Binding MusicVolume, Mode=TwoWay}"
                             TickFrequency="10"
                             IsSnapToTickEnabled="True"
-                            Width="200" Margin="0,0,0,20"/>
-
-                        <TextBlock Text="Interaction Sounds" FontSize="25" FontWeight="SemiBold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
-                        <Slider Minimum="0" Maximum="100"
-                            Value="{Binding InteractionVolume, Mode=TwoWay}"
-                            TickFrequency="10"
-                            IsSnapToTickEnabled="True"
-                            Width="200"/>
+                            Width="400" Margin="0,0,0,20"/>
                     </StackPanel>
 
-                    <Separator Grid.Column="1" Margin="20,0" Width="2" Background="Gray"/>
+                    <Separator Grid.Row="1" Margin="20,10" Width="3" Background="White"/>
 
-                    <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Text="Skin Selection" FontSize="25" FontWeight="SemiBold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
-                        <Image Width="210" Height="96" Source="{Binding SelectedSkin}" Margin="0,0,0,20"/>
+                    <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Text="Skin for Player 1" FontSize="25" FontWeight="SemiBold" Margin="0,0,10,0" HorizontalAlignment="Center"/>
                         <ComboBox Width="240" Height="110"
-                              ItemsSource="{Binding SkinImages}"
-                              SelectedItem="{Binding SelectedSkin, Mode=TwoWay}"
-                              ItemTemplate="{StaticResource ImageItemTemplate}"/>
+                                  ItemsSource="{Binding SkinImages}"
+                                  SelectedItem="{Binding Player1Skin, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource ImageItemTemplate}"/>
+                    </StackPanel>
+
+                    <Separator Grid.Row="3" Margin="0,10" Width="3" Background="White"/>
+
+                    <StackPanel Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Text="Skin for Player 2" FontSize="25" FontWeight="SemiBold" Margin="0,0,10,0" HorizontalAlignment="Center"/>
+                        <ComboBox Width="240" Height="110"
+                                  ItemsSource="{Binding SkinImages}"
+                                  SelectedItem="{Binding Player2Skin, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource ImageItemTemplate}"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>

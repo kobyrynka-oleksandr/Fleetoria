@@ -25,6 +25,9 @@ namespace Fleetoria
         PlayerHuman human1 = new PlayerHuman();
         PlayerHuman human2 = new PlayerHuman();
 
+        string human1Skin = SettingsManager.LoadSettings().Player1Skin;
+        string human2Skin = SettingsManager.LoadSettings().Player2Skin;
+
         private bool isSecondHumanTurn = false;
 
         private enum AttackResult { Miss, Hit }
@@ -46,36 +49,36 @@ namespace Fleetoria
 
             bgOps.CreateBattlefield(LabeledBattleGridHuman1);
 
-            bgOps.AddShipsToPanel(ShipPanel1, human1, LabeledBattleGridHuman1);
+            bgOps.AddShipsToPanel(ShipPanel1, human1, LabeledBattleGridHuman1, human1Skin);
 
             bgOps.CreateBattlefield(LabeledBattleGridHuman2);
 
-            bgOps.AddShipsToPanel(ShipPanel2, human2, LabeledBattleGridHuman2);
+            bgOps.AddShipsToPanel(ShipPanel2, human2, LabeledBattleGridHuman2, human2Skin);
         }
 
         private void ResetButton1_Click(object sender, RoutedEventArgs e)
         {
-            ResetShips(LabeledBattleGridHuman1, human1, ShipPanel1);
+            ResetShips(LabeledBattleGridHuman1, human1, ShipPanel1, human1Skin);
         }
 
         private void ResetButton2_Click(object sender, RoutedEventArgs e)
         {
-            ResetShips(LabeledBattleGridHuman2, human2, ShipPanel2);
+            ResetShips(LabeledBattleGridHuman2, human2, ShipPanel2, human2Skin);
         }
 
         private void ShuffleButton1_Click(object sender, RoutedEventArgs e)
         {
-            ShuffleShips(LabeledBattleGridHuman1, human1, ShipPanel1);
+            ShuffleShips(LabeledBattleGridHuman1, human1, ShipPanel1, human1Skin);
         }
 
         private void ShuffleButton2_Click(object sender, RoutedEventArgs e)
         {
-            ShuffleShips(LabeledBattleGridHuman2, human2, ShipPanel2);
+            ShuffleShips(LabeledBattleGridHuman2, human2, ShipPanel2, human2Skin);
         }
 
-        private void ResetShips(Grid grid, PlayerHuman human, Panel panel)
+        private void ResetShips(Grid grid, PlayerHuman human, Panel panel, string skinName)
         {
-            bgOps.ResetBattleGrid(grid, human, panel);
+            bgOps.ResetBattleGrid(grid, human, panel, skinName);
         }
         private void Ship_DragOver_Wrapper1(object sender, DragEventArgs e)
         {
@@ -122,9 +125,9 @@ namespace Fleetoria
             bgOps.PlaceShipOnGrid(ship, row, col, grid);
         }
 
-        private void ShuffleShips(Grid grid, PlayerHuman human, Panel panel)
+        private void ShuffleShips(Grid grid, PlayerHuman human, Panel panel, string skinName)
         {
-            bgOps.ResetBattleGrid(grid, human, panel);
+            bgOps.ResetBattleGrid(grid, human, panel, skinName);
             var random = new Random();
 
             foreach (Ship ship in panel.Children.OfType<Ship>().ToList())
@@ -286,8 +289,8 @@ namespace Fleetoria
         {
             CustomMessageBox.Show($"{message}", "OK");
 
-            bgOps.ResetBattleGrid(LabeledBattleGridHuman1, human1, ShipPanel1);
-            bgOps.ResetBattleGrid(LabeledBattleGridHuman2, human2, ShipPanel2);
+            bgOps.ResetBattleGrid(LabeledBattleGridHuman1, human1, ShipPanel1, human1Skin);
+            bgOps.ResetBattleGrid(LabeledBattleGridHuman2, human2, ShipPanel2, human2Skin);
 
             LabeledBattleGridOverlap1.Children.Clear();
             LabeledBattleGridOverlap1.RowDefinitions.Clear();
