@@ -45,7 +45,7 @@ namespace Fleetoria
             {
                 target = TryNextDirection();
             }
-            else 
+            else
             {
                 target = TryContinueDirection();
             }
@@ -79,8 +79,7 @@ namespace Fleetoria
                         {
                             human.ChangeMatrixCellBack(next.Item1, next.Item2);
                             NotifyShipDestroyed();
-                            mode = AttackMode.Random;
-                            return (next.Item1, next.Item2);
+                            return next;
                         }
                         else
                         {
@@ -92,12 +91,25 @@ namespace Fleetoria
                     return next;
                 }
             }
-            NotifyShipDestroyed();
-            return GetRandomCell();
+
+            mode = AttackMode.FinishShip;
+            currentDirectionIndex = -1;
+            lastHit = firstHit;
+            return GetCellForAttack();
         }
 
         private (int row, int col) TryContinueDirection()
         {
+            if (currentDirectionIndex < 0 || currentDirectionIndex >= directions.Count)
+            {
+                mode = AttackMode.Random;
+                firstHit = null;
+                lastHit = null;
+                currentDirectionIndex = -1;
+                directionConfirmed = false;
+                return GetCellForAttack();
+            }
+
             var dir = directions[currentDirectionIndex];
             var next = (lastHit.Value.row + dir.dRow, lastHit.Value.col + dir.dCol);
 
@@ -112,24 +124,23 @@ namespace Fleetoria
                     {
                         human.ChangeMatrixCellBack(next.Item1, next.Item2);
                         NotifyShipDestroyed();
-                        mode = AttackMode.Random;
-                        return (next.Item1, next.Item2);
+                        return next;
                     }
                     human.ChangeMatrixCellBack(next.Item1, next.Item2);
                 }
                 else
                 {
                     lastHit = firstHit;
-                    dir = (-dir.dRow, -dir.dCol);
-                    currentDirectionIndex = directions.FindIndex(d => d == dir);
+                    var reversed = (-dir.dRow, -dir.dCol);
+                    currentDirectionIndex = directions.FindIndex(d => d == reversed);
                 }
                 return next;
             }
             else
             {
                 lastHit = firstHit;
-                dir = (-dir.dRow, -dir.dCol);
-                currentDirectionIndex = directions.FindIndex(d => d == dir);
+                var reversed = (-dir.dRow, -dir.dCol);
+                currentDirectionIndex = directions.FindIndex(d => d == reversed);
                 return TryContinueDirection();
             }
         }
