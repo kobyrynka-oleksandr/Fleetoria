@@ -32,7 +32,15 @@
                Grid.ColumnSpan="3"
                HorizontalAlignment="Center"
                Margin="10,0,10,10"
-               x:Name="Logo"/>
+               x:Name="Logo">
+            <Image.Effect>
+                <DropShadowEffect Color="Black"
+                   Direction="320"
+                   ShadowDepth="5"
+                   Opacity="0.5"
+                   BlurRadius="10"/>
+            </Image.Effect>
+        </Image>
 
         <Button x:Name="PvAIButton"
             Content="Player vs AI"

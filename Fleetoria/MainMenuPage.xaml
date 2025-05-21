@@ -34,13 +34,21 @@
        Visibility="Collapsed"/>
 
         <Image Source="/Resources/Logo_Fleetoria_2.png"
-           Stretch="Uniform"
-           Panel.ZIndex="0" 
-           Grid.Column="0"
-           Grid.ColumnSpan="3"
-           HorizontalAlignment="Center"
-           Margin="10,0,10,10"
-           x:Name="Logo"/>
+       Stretch="Uniform"
+       Panel.ZIndex="0" 
+       Grid.Column="0"
+       Grid.ColumnSpan="3"
+       HorizontalAlignment="Center"
+       Margin="10,0,10,10"
+       x:Name="Logo">
+            <Image.Effect>
+                <DropShadowEffect Color="Black"
+                          Direction="320"
+                          ShadowDepth="5"
+                          Opacity="0.5"
+                          BlurRadius="10"/>
+            </Image.Effect>
+        </Image>
 
         <Button x:Name="PlayButton"
                 Content="Play"

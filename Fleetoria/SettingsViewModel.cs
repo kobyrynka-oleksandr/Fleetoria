@@ -44,7 +44,6 @@ namespace Fleetoria
         {
             $"{basePath}Ship_skin_1_logo.png",
             $"{basePath}Ship_skin_2_logo.png"
-            // Додавайте нові скіни тут
         };
 
             var settings = SettingsManager.LoadSettings();

@@ -160,7 +160,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Back_Ground_Main.png" />
+    <Resource Include="Resources\Back_Ground_Main.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Ship_skins\Ship_skin_1\1Deck_ship.png" />
     <Resource Include="Resources\Ship_skins\Ship_skin_1\1Deck_ship_rotated.png" />
   </ItemGroup>
