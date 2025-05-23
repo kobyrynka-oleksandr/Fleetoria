@@ -10,7 +10,8 @@
         Height="800"
         WindowState="Maximized"
         WindowStyle="None"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Icon="/Resources/GameIcon.png">
     <Window.Background>
         <ImageBrush ImageSource="/Resources/Back_Ground_Main.png" Stretch="Fill" />
     </Window.Background>

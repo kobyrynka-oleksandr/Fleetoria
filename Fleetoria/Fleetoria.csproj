@@ -241,5 +241,8 @@
   <ItemGroup>
     <Resource Include="Resources\Ship_skins\Ship_skin_logos\Ship_skin_2_logo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\GameIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
