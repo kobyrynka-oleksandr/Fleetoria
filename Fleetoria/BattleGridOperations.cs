@@ -151,7 +151,11 @@ namespace Fleetoria
                         ship.isPlaced = false;
                     }
 
-                    DragDrop.DoDragDrop(ship, ship, DragDropEffects.Move);
+                    var data = new DataObject();
+                    data.SetData(typeof(Ship), ship);
+                    data.SetData(ship.GetType(), ship);
+
+                    DragDrop.DoDragDrop(ship, data, DragDropEffects.Move);
 
                     if (!ship.isPlaced && grid.Children.Contains(ship))
                     {
