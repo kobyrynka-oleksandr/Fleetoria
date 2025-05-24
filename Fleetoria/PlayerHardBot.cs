@@ -17,9 +17,7 @@ namespace Fleetoria
         private (int row, int col)? firstHit = null;
         private (int row, int col)? lastHit = null;
         private List<(int dRow, int dCol)> directions = new List<(int, int)> { (-1, 0), (1, 0), (0, -1), (0, 1) };
-        private List<(int dRow, int dCol)> availableDirections = new List<(int, int)>();
         private int currentDirectionIndex = -1;
-        private bool directionConfirmed = false;
 
 
         public PlayerHardBot(PlayerHuman human) : base()
@@ -84,7 +82,6 @@ namespace Fleetoria
                         else
                         {
                             human.ChangeMatrixCellBack(next.Item1, next.Item2);
-                            directionConfirmed = true;
                             mode = AttackMode.FinishShip;
                         }
                     }
@@ -106,7 +103,6 @@ namespace Fleetoria
                 firstHit = null;
                 lastHit = null;
                 currentDirectionIndex = -1;
-                directionConfirmed = false;
                 return GetCellForAttack();
             }
 
@@ -156,7 +152,6 @@ namespace Fleetoria
             firstHit = null;
             lastHit = null;
             currentDirectionIndex = -1;
-            directionConfirmed = false;
         }
         public static void Shuffle<T>(List<T> list, Random rng)
         {
