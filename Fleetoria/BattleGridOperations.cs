@@ -182,6 +182,9 @@ namespace Fleetoria
 
         public void HandleRotationDuringDrag(Ship ship, DragEventArgs e, int row, int col, int totalRows, int totalColumns, Player player)
         {
+            if (!CanPlaceShipAt(row, col, ship, totalRows, totalColumns, player))
+                return;
+
             bool isAltPressed = e.KeyStates.HasFlag(DragDropKeyStates.AltKey);
 
             if (isAltPressed && !ship.IsRotatedDuringDrag)
@@ -189,13 +192,6 @@ namespace Fleetoria
                 ship.Rotate();
                 ship.ResetSpan();
                 ship.IsRotatedDuringDrag = true;
-
-                if (!CanPlaceShipAt(row, col, ship, totalRows, totalColumns, player))
-                {
-                    ship.Rotate();
-                    ship.ResetSpan();
-                    ship.IsRotatedDuringDrag = false;
-                }
             }
             else if (!isAltPressed)
             {
