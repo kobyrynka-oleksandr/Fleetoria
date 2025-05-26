@@ -24,6 +24,7 @@ namespace Fleetoria
         public MainWindow()
         {
             InitializeComponent();
+            MusicPlayer.Initialize();
             MainFrame.Navigate(new MainMenuPage());
         }
     }

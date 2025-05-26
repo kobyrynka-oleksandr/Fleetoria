@@ -22,7 +22,12 @@ namespace Fleetoria
         public int MusicVolume
         {
             get => _musicVolume;
-            set { _musicVolume = value; OnPropertyChanged(); }
+            set
+            {
+                _musicVolume = value;
+                OnPropertyChanged();
+                MusicPlayer.SetVolume(_musicVolume);
+            }
         }
 
         public string Player1Skin
