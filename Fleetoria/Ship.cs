@@ -71,26 +71,15 @@ namespace Fleetoria
                 isRotated = false;
             LoadShipImage();
         }
+        public void Rotate(bool isRotated)
+        {
+            this.isRotated = isRotated;
+            LoadShipImage();
+        }
         public void ResetSpan()
         {
             Grid.SetRowSpan(this, 1);
             Grid.SetColumnSpan(this, 1);
         }
-        public void SetRotation(bool isRotated)
-        {
-            this.isRotated = isRotated;
-
-            this.LayoutTransform = Transform.Identity;
-
-            if (isRotated)
-            {
-                this.LayoutTransform = new RotateTransform(0);
-            }
-            else
-            {
-                this.LayoutTransform = new RotateTransform(90);
-            }
-        }
     }
-
 }

@@ -192,6 +192,14 @@ namespace Fleetoria
                 ship.Rotate();
                 ship.ResetSpan();
                 ship.IsRotatedDuringDrag = true;
+
+                if (!CanPlaceShipAt(row, col, ship, totalRows, totalColumns, player))
+                {
+                    ship.Rotate();
+                    ship.ResetSpan();
+                    ship.IsRotatedDuringDrag = false;
+
+                }
             }
             else if (!isAltPressed)
             {
@@ -259,7 +267,7 @@ namespace Fleetoria
             while (attempts < 1000)
             {
                 bool isRotated = random.Next(2) == 0;
-                ship.SetRotation(isRotated);
+                ship.Rotate(isRotated);
 
                 int maxRow = isRotated ? 9 : 10 - ship.DeckCount;
                 int maxCol = isRotated ? 10 - ship.DeckCount : 9;
